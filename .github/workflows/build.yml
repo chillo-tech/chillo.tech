@@ -1,0 +1,93 @@
+on:
+  push:
+    branches:
+      - authentication
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '14.x'
+
+permissions:
+  contents: read
+
+jobs:
+
+  create-folder:
+    name: Create folder
+    runs-on: ubuntu-latest
+    steps:
+    - name: Create folder
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.RECETTE_APPLICATIONS_HOST }}
+        port: ${{ secrets.RECETTE_APPLICATIONS_PORT }}
+        username: ${{ secrets.RECETTE_APPLICATIONS_USERNAME }}
+        password: ${{ secrets.RECETTE_APPLICATIONS_PASSWPRD }}
+        key: ${{ secrets.RECETTE_APPLICATIONS_SSH_PRIVATE_KEY }}
+        script: |
+          sudo mkdir -p /opt/applications/zeeven/app-zeeven
+          sudo chmod ugo+rwx /opt/applications/zeeven/app-zeeven
+
+
+  copy-configs:
+    name: "copy configs"
+    runs-on: ubuntu-latest
+    needs: create-folder
+    steps:
+      - uses: actions/checkout@master
+      - 
+        name: copy file via ssh password
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.RECETTE_APPLICATIONS_HOST }}
+          port: ${{ secrets.RECETTE_APPLICATIONS_PORT }}
+          username: ${{ secrets.RECETTE_APPLICATIONS_USERNAME }}
+          password: ${{ secrets.RECETTE_APPLICATIONS_PASSWPRD }}
+          key: ${{ secrets.RECETTE_APPLICATIONS_SSH_PRIVATE_KEY }}
+          source: "docker-compose.yml"
+          target: "/opt/applications/zeeven/app-zeeven"
+
+  dockerize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      
+      -
+        name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      -
+        name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          tags: simachille/app-zeeven:latest
+  
+
+  run-container:
+    name: "Run container"
+    runs-on: ubuntu-latest
+    needs: [dockerize, copy-configs]
+    steps:
+    - name: Run container
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.RECETTE_APPLICATIONS_HOST }}
+        port: ${{ secrets.RECETTE_APPLICATIONS_PORT }}
+        username: ${{ secrets.RECETTE_APPLICATIONS_USERNAME }}
+        password: ${{ secrets.RECETTE_APPLICATIONS_PASSWPRD }}
+        key: ${{ secrets.RECETTE_APPLICATIONS_SSH_PRIVATE_KEY }}
+        script: |
+          docker compose -f /opt/applications/zeeven/app-zeeven/docker-compose.yml stop
+          docker compose -f /opt/applications/zeeven/app-zeeven/docker-compose.yml rm -f
+          docker rmi simachille/app-zeeven:latest
+          sudo docker compose -f /opt/applications/zeeven/app-zeeven/docker-compose.yml up -d
