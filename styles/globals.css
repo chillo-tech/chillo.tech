@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell,
+    Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.card {
+  position: "relative";
+  width: "100%";
+  height: "auto";
+}
+.sm-menu {
+  position: relative;
+  height: 1px;
+  z-index: 2;
+}
+.sm-menu-content {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  z-index: 3;
+}
+@layer base {
+  [type='text'],
+  [type='email'],
+  [type='url'],
+  [type='password'],
+  [type='number'],
+  [type='date'],
+  [type='datetime-local'],
+  [type='month'],
+  [type='search'],
+  [type='tel'],
+  [type='time'],
+  [type='week'],
+  [multiple],
+  textarea,
+  select{
+    @apply w-full inline-block rounded-lg shadow-sm border border-gray-300 text-lg text-black focus:border-blue-500 focus:ring-blue-500
+  }
+
+  [type='checkbox'],
+  [type='radio'] {
+    @apply rounded border border-gray-300 focus:border-blue-500 focus:ring-blue-500
+  }
+  ul {
+    @apply list-disc ml-10 mb-2
+  }
+  .job-item p {
+    @apply mt-3
+  }
+  .sm-menu-content {
+    @apply bg-white
+  }
+  .training p {
+    @apply mb-5
+  }
+  .description ul {
+    @apply ml-0
+  }
+  .description p {
+    @apply mb-5 text-xl font-extralight
+  }
+  .description .tabs-body {
+    @apply p-5
+  }
+  .description .tabs-body ul{
+    @apply ml-20 text-xl
+  }
+}
