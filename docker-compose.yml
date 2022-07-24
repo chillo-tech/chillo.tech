@@ -8,7 +8,7 @@ services:
     restart: always
     ports:
       # The HTTP port
-      - "82:3001"
+      - "83:3000"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.chillo.tech.rule=Headers(`X-Host`, `chillo.tech`)"
