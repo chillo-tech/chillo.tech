@@ -41,7 +41,7 @@ jobs:
           host: ${{ secrets.RECETTE_APPLICATIONS_HOST }}
           port: ${{ secrets.RECETTE_APPLICATIONS_PORT }}
           username: ${{ secrets.RECETTE_APPLICATIONS_USERNAME }}
-          password: ${{ secrets.RECETTE_APPLICATIONS_PASSWPRD }}
+          #password: ${{ secrets.RECETTE_APPLICATIONS_PASSWPRD }}
           key: ${{ secrets.RECETTE_APPLICATIONS_SSH_PRIVATE_KEY }}
           source: "docker-compose.yml"
           target: "/opt/applications/chillo-tech/website"
@@ -83,7 +83,7 @@ jobs:
         host: ${{ secrets.RECETTE_APPLICATIONS_HOST }}
         port: ${{ secrets.RECETTE_APPLICATIONS_PORT }}
         username: ${{ secrets.RECETTE_APPLICATIONS_USERNAME }}
-        password: ${{ secrets.RECETTE_APPLICATIONS_PASSWPRD }}
+        #password: ${{ secrets.RECETTE_APPLICATIONS_PASSWPRD }}
         key: ${{ secrets.RECETTE_APPLICATIONS_SSH_PRIVATE_KEY }}
         script: |
           docker compose -f /opt/applications/chillo-tech/website/docker-compose.yml stop
