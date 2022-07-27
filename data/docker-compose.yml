@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  strapi:
+    container_name: strapi-applications-management
+    image: strapi/strapi:3.6.8-alpine
+    environment:
+      - DATABASE_CLIENT=mongo
+      - DATABASE_HOST=db-mongo
+      - DATABASE_PORT=27017
+      - DATABASE_NAME=strapi-applications-management
+      - DATABASE_USERNAME=rmongo
+      - DATABASE_PASSWORD=rmongo
+      - AUTHENTICATION_DATABASE=strapi-applications-management
+    ports:
+      - 1337:1337
+    volumes:
+      - /opt/applications/applications-backoffice/data:/srv/app
+networks:
+  applications-network:
+    external: true
+    name: applications-network

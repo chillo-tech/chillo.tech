@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  chillo.tech:
+    container_name: chillo.tech
+    # The official v2 Traefik docker image
+    image: simachille/chillo.tech:latest
+    restart: always
+    ports:
+      # The HTTP port
+      - "83:3000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.chillo.tech.rule=Headers(`X-Host`, `chillo.tech`)"
+      - "traefik.docker.network=applications-network"
+      - "traefik.http.middlewares.serviceheaders.headers.accesscontrolalloworiginlist=*" 
+      - "traefik.http.routers.service.middlewares=serviceheaders"
+
+    networks:
+      - applications-network
+networks:
+  applications-network:
+    external: true
+    name: applications-network
