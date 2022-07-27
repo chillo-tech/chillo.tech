@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
+  
   output: 'standalone',
   reactStrictMode: true,
   typescript: {
@@ -11,5 +12,5 @@ module.exports = {
   },
   images: {
     domains: ['backoffice.chillo.fr'],
-  },
+  }
 }
