@@ -3,10 +3,11 @@ import Layout from '../layouts/opened';
 import { ExpertiseCategory, Tabs, Title } from '../components';
 import { EXPERTISE, REFERENCES, HEADING } from '../app-utils';
 import Image from 'next/image';
+import References from '../components/references';
 const Home: NextPage = () => {
   return (
     <Layout>
-      <section>
+      <section className='homepage'>
         <section className="expertise">
             <div className="container mx-auto py-5 grid md:grid-cols-3 md:gap-3">
             {
@@ -65,28 +66,10 @@ const Home: NextPage = () => {
         </section>
         <section className="bg-white pt-10" id="ils-nous-font-confiance">
           <div className="container mx-auto py-4">
-          <Title>
-            <p>Ils nous font confiance</p>
-          </Title>
-          <div className="container flex justify-between py-6 flex-col items-center md:flex-row" 
-          >
-            {
-                  REFERENCES.map(
-                    (item, index) =>(
-                      <div 
-                        key={`reference-${index}`}>
-                        <Image  
-                            src={`/images/${item.src}`} alt={`${item.label}`} 
-                            width='100%'
-                            height='100%'
-                            objectFit='contain'
-                            priority
-                        />
-                      </div>
-                    )
-                  )
-                }
-            </div>
+            <Title>
+              <p>Ils nous font confiance</p>
+            </Title>
+            <References />
           </div>
         </section>
       </section>

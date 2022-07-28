@@ -84,4 +84,7 @@ a {
   .description .tabs-body ul{
     @apply ml-20 text-xl
   }
+  .homepage .references span{
+    @apply block !important
+  }
 }

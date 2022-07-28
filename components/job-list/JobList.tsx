@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { join } from 'path';
 import React, {useEffect, useState} from 'react'
 
 function JobList() {

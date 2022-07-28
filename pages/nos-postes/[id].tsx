@@ -13,7 +13,6 @@ function OfferDisplay() {
   useEffect(() => {
     const read = async() => {
       try {
-        
         const res = await fetch(`${process.env.BACKOFFICE_URL}/chillo-services-jobs/${router.query.id}`);
         const offer = await res.json();
         setData(offer);
