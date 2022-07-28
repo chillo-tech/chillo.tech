@@ -14,6 +14,7 @@ const Layout = ({ children }) =>{
         <meta property="og:site_name" content="chillo services" />
         <title>chillo services|Société de conseil en nouvelles technologies centrée sur l'expérience client. </title>
         <link rel="icon" href="/favicon.ico" />
+        <link rel="shortcut icon" href="/favicon.ico" />
       </Head>
      <Header />
       <main className='px-2 md:px-0'>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Layout from '../../../layouts/opened';
 import ReactMarkdown from "react-markdown";
 import { Tabs } from '../../../components';
@@ -6,7 +6,23 @@ import {dateFormat} from '../../../utils';
 import Inscription from '../../../components/inscription';
 import Image from 'next/image';
 
-function InitiationWeb({data}){
+function InitiationWeb(){
+  
+  const [data, setData] = useState({});
+  useEffect(() => {
+    const read = async() => {
+      try {
+        
+        const res = await fetch(`${process.env.BACKOFFICE_URL}/trainings/62dc666da6ced0010719c932`)
+        const offer = await res.json();
+        setData(offer);
+      } catch (error) {
+        console.log(error);
+        setData({})
+      }
+    };
+    read();
+  }, [])
   return (
     <Layout>
       <section className="container text-xl mx-auto training py-4">
@@ -26,12 +42,12 @@ function InitiationWeb({data}){
             </div>
             <div className="container flex justify-center py-6 flex-col items-center md:flex-row">
               {
-                  data.image.slice(0).reverse().map(
+                  data?.image?.slice(0).reverse().map(
                     (item, index) =>(
                       <div 
                         key={`image-${index}`} className="mx-5">
                         <Image  
-                            src={`https://backoffice.chillo.fr${item.url}`} 
+                            src={`${process.env.BACKOFFICE_URL}${item.url}`} 
                             alt={`${item.alternativeText}`} 
                             width='100%'
                             height='100%'
@@ -64,12 +80,3 @@ function InitiationWeb({data}){
 }
 
 export default InitiationWeb;
-
-// This gets called on every request
-export async function getServerSideProps(context) {
-  const res = await fetch(`https://backoffice.chillo.fr/trainings/62dc666da6ced0010719c932`)
-  const data = await res.json()
-
-  // Pass data to the page via props
-  return { props: { data } }
-}

@@ -77,7 +77,7 @@ function Inscription({to, start, end}: params) {
             }
           </div>
           <div>
-          <div className="grid grid-cols-1 gap-4">
+          <div className="grid grid-cols-1">
             <div>
               <label htmlFor="firstName" className="font-extralight form-label">Prénom</label>
               <div className="mt-1">

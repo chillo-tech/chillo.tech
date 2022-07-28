@@ -7,7 +7,7 @@ function JobList() {
   useEffect(() => {
     const read = async() => {
       try {
-        const response = await fetch("https://backoffice.chillo.fr/chillo-services-jobs");
+        const response = await fetch(`${process.env.BACKOFFICE_URL}/chillo-services-jobs`);
         const data = await response.json();
         setJobs(data);
       } catch (error) {

@@ -14,5 +14,16 @@ module.exports = {
   reactStrictMode: false,
   images: {
     domains: ['backoffice.chillo.fr'],
-  }
+  },
+  env: {
+    BACKOFFICE_URL: process.env.BACKOFFICE_URL,
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: `${process.env.BACKOFFICE_URL}/api/:path*`,
+      },
+    ]
+  },
 }
