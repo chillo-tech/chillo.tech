@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
   output: 'standalone',
+
   reactStrictMode: true,
   typescript: {
     // !! WARN !!
@@ -9,6 +10,8 @@ module.exports = {
     // !! WARN !!
     ignoreBuildErrors: true,
   },
+
+  reactStrictMode: false,
   images: {
     domains: ['backoffice.chillo.fr'],
   }
