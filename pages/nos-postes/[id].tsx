@@ -21,7 +21,9 @@ function OfferDisplay() {
         setData({})
       }
     };
-    read();
+    if(router.query.id) {
+      read();
+    }
   }, [router.query.id])
   return (
     <Layout>
@@ -29,7 +31,7 @@ function OfferDisplay() {
         (data && data.image) ? (
           <>
             <section className='container job-item mx-auto my-6'>
-              <section className="grid grid-cols-1 items-center md:grid-cols-4 md:gap-10">
+              <section className="grid grid-cols-1 md:grid-cols-4 md:gap-10">
                 <div className="hidden md:block" >
                   <ImageCard  title={`${data.contrat} | ${data.address}`} subtitle={data.title} src={`${process.env.BACKOFFICE_URL}${data?.image[0].formats.medium.url}`}/>
                 </div>

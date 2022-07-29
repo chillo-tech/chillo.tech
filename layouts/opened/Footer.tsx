@@ -17,11 +17,15 @@ function Footer(props) {
             <p>De la stratégie opérationnelle 
               à la mise en œuvre de solutions de pointe, drivées par les technologies web ou mobiles.</p>
             </div>
-            <div className="presentation flex items-center justify-center">
+            <div className="presentation flex flex-col items-center justify-center">
               <div className='px-10 flex items-center justify-between text-center'>
                 <FaLinkedinIn color='text-slate-300' className='px-3 text-6xl'/>
                 <FaInstagram className='px-3 text-6xl'/>
                 <FaFacebook className='px-3 text-6xl'/>
+              </div>
+              <div className='py-2'>
+                <p>(+33) 7 61 70 57 45</p>
+                <p>accueil@chillo.tech</p>
               </div>
             </div>
           </div>

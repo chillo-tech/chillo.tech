@@ -6,5 +6,5 @@ export const dateFormat = (dateAsString: {dateAsString: string}) => {
   const month = currentDate.getMonth();
   const day = `0${currentDate.getDate()}`.slice(-2);
 
-  return `${day} ${monthNames[month]} ${year}`
+  return `${day} ${monthNames[month]}`
 }

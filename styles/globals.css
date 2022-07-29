@@ -76,15 +76,59 @@ a {
     @apply ml-0
   }
   .description p {
-    @apply mb-5 text-xl font-extralight
+    @apply mb-5 text-base font-extralight
   }
   .description .tabs-body {
     @apply p-5
   }
   .description .tabs-body ul{
-    @apply ml-20 text-xl
+    @apply ml-20 text-base
   }
   .homepage .references span{
     @apply block !important
   }
+}
+
+.formations img {
+  width: 45px;
+  max-width: 100%;
+  margin-bottom: 5px;
+  height: auto;
+  width: auto\9; /* ie8 */
+}
+
+.references img {
+  width: 200px;
+  max-width: 100%;
+  height: auto;
+  width: auto\9; /* ie8 */
+}
+
+.image-card {
+  position: relative;
+  z-index: 1;
+  width: "100%";
+  height: "500px";
+  max-height: "500px";
+  max-width: "100%";
+  overflow: 'hidden';
+  border-radius: 15
+}
+
+.image-card .text-wrapper {
+    z-index: 2;
+    position: absolute;
+    background: rgba(0,0,0, 0.2);
+    left: 0;
+    right:0; 
+    bottom: 0; 
+    top: 0
+}
+
+.image-card .text-content {
+  z-index: 2;
+  position: absolute;
+  left: 0;
+  right:0; 
+  bottom: 0;
 }

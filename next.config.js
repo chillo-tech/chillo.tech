@@ -13,10 +13,15 @@ module.exports = {
 
   reactStrictMode: false,
   images: {
-    domains: ['backoffice.chillo.fr'],
+    domains: ['backoffice.chillo.fr', 'strapi-applications-management'],
   },
+  eslint: { ignoreDuringBuilds: true },
   env: {
     BACKOFFICE_URL: process.env.BACKOFFICE_URL,
+    DNS: process.env.DNS,
+    FACEBOOK_SHARE_LINK: process.env.FACEBOOK_SHARE_LINK,
+    LINKEDIN_SHARE_LINK: process.env.LINKEDIN_SHARE_LINK,
+    TWITTER_SHARE_LINK: process.env.TWITTER_SHARE_LINK,
   },
   async rewrites() {
     return [

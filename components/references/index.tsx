@@ -1,6 +1,10 @@
 import Image from 'next/image';
 import React, { useState, useEffect } from 'react'
+function GraphCMSImageLoader({ src, width }) {
+  const relativeSrc = (src) => src;
 
+  return `${process.env.BACKOFFICE_URL}${src}`;
+}
 function References() {
   const [references, setReferences] = useState([])
   useEffect(() => {
@@ -18,20 +22,19 @@ function References() {
   }, [])
   return (
     
-    <div className="container mx-auto grid grid-rows-1 grid-flow-col gap-4 references my-14">
+    <div className="container mx-auto items-center text-center grid grid-cols-2 md:grid-cols-4 gap-4 references my-14">
     {
           references.map(
             (item, index) =>(
-              <div 
+              <picture className='flex justify-center'
                 key={`reference-${index}`}>
-                <Image
-                    src={`${process.env.BACKOFFICE_URL}${item.image[0].url}`} alt={`${item.image[0].alternativeText}`} 
-                    width='100%'
-                    height='100%'
-                    objectFit='contain'
-                    priority
+                 <source srcSet={`${process.env.BACKOFFICE_URL}${item.image[0].url}`}  type="image/webp" />
+                 <img
+                    src={`${process.env.BACKOFFICE_URL}${item.image[0].url}`} 
+                    alt={`${item.image[0].alternativeText}`}
+                    className="image"
                 />
-              </div>
+              </picture>
             )
           )
         }
