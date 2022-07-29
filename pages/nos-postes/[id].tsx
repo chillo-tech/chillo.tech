@@ -26,7 +26,7 @@ function OfferDisplay() {
   return (
     <Layout>
       {
-        data ? (
+        (data && data.image) ? (
           <>
             <section className='container job-item mx-auto my-6'>
               <section className="grid grid-cols-1 items-center md:grid-cols-4 md:gap-10">
