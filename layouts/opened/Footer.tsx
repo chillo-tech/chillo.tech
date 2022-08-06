@@ -2,9 +2,12 @@
 import { DeviceMobileIcon, MailIcon } from '@heroicons/react/solid';
 import React from 'react';
 import { FaFacebook, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
+import { ContactBanner } from '../../components';
 function Footer(props) {
   return (
-    <div className="bg-blue-900 py-3 font-extralight flex flex-col" id="a-propos-de-nous">
+    <>
+      <div className="bg-blue-900 pb-3 font-extralight flex flex-col" id="a-propos-de-nous">
+        <ContactBanner />
         <div className="container mx-auto text-slate-300 py-3">
           <div className="grid grid-cols-1 gap-10 p-3 md:grid-cols-3 md:p-0 items-center">
             <div className="presentation">
@@ -30,12 +33,13 @@ function Footer(props) {
             </div>
           </div>
         </div>
-      <div className="copyright border-top-1 text-slate-100 mt-2 font-light">
-        <div className="container py-5 text-sm mx-auto text-center border-solid border-t border-gray-600">
-          &copy; Copyright {(new Date()).getFullYear()} chillo.tech. Tous droits réservés.
+        <div className="copyright border-top-1 text-slate-100 mt-2 font-light">
+          <div className="container py-5 text-sm mx-auto text-center border-solid border-t border-gray-600">
+            &copy; Copyright {(new Date()).getFullYear()} chillo.tech. Tous droits réservés.
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
