@@ -23,6 +23,15 @@ module.exports = {
     LINKEDIN_SHARE_LINK: process.env.LINKEDIN_SHARE_LINK,
     TWITTER_SHARE_LINK: process.env.TWITTER_SHARE_LINK,
   },
+  async redirects() {
+    return [
+      {
+        source: '/formations',
+        destination: '/formations/initiation-web',
+        permanent: true,
+      },
+    ]
+  },
   async rewrites() {
     return [
       {
