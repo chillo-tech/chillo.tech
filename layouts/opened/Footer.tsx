@@ -1,9 +1,8 @@
 
-import { DeviceMobileIcon, MailIcon } from '@heroicons/react/solid';
 import React from 'react';
 import { FaFacebook, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
 import { ContactBanner } from '../../components';
-function Footer(props) {
+function Footer() {
   return (
     <>
       <div className="bg-blue-900 pb-3 font-extralight flex flex-col" id="a-propos-de-nous">

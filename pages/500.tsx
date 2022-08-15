@@ -9,7 +9,7 @@ function PageNotFound() {
 	}
   return (
     <Layout>
-        <section className='container mx-auto  my-10 md:my-auto flex flex-col justify-center'>
+        <section className='container mx-auto py-32 md:my-auto flex flex-col justify-center'>
           <div className='bg-white p-5 rounded-xl text-blue-800 text-lg w-3/4 mx-auto'>
             <p className='text-center my-5'>Désolé, une erreur est survenue</p>
             <p className='text-center my-5'>

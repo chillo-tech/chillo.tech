@@ -4,12 +4,16 @@ import { ExpertiseCategory, Tabs, Title } from '../components';
 import { EXPERTISE, REFERENCES, HEADING } from '../app-utils';
 import Image from 'next/image';
 import References from '../components/references';
+import Head from 'next/head';
 const Home: NextPage = () => {
   return (
     <Layout>
+      <Head>
+        <meta property="og:description" content="Société de conseil en nouvelles technologies centrée sur l'expérience client." key='description'/>
+      </Head>
       <section className='homepage'>
         <section className="expertise">
-            <div className="container mx-auto py-5 grid md:grid-cols-3 md:gap-3">
+            <div className="container px-2 mx-auto py-5 grid md:grid-cols-3 md:gap-3">
             {
                   HEADING.map(
                     (item, index) =>(
@@ -50,7 +54,7 @@ const Home: NextPage = () => {
                 }
             </div>
         </section>
-        <section className="expertise bg-rose-50 py-5" id="notre-expert">
+        <section className="expertise bg-rose-50 py-5" id="notre-expertise">
           <div className="container mx-auto py-4">
             <Title>
               <p>Notre expertise</p>

@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
   output: 'standalone',
-
+  staticPageGenerationTimeout: 1000,
   reactStrictMode: true,
   typescript: {
     // !! WARN !!
@@ -25,11 +25,7 @@ module.exports = {
   },
   async redirects() {
     return [
-      {
-        source: '/formations',
-        destination: '/formations/initiation-web',
-        permanent: true,
-      },
+      
     ]
   },
   async rewrites() {

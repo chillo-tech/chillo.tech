@@ -3,6 +3,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { useState } from 'react';
 import { NetworkShared } from "..";
+import { dateFormat, slugify } from "../../utils";
+import { ObjectID } from "bson";
 const schema = yup.object({
     id: yup.string(),
     firstName: yup.string()
@@ -21,16 +23,14 @@ const schema = yup.object({
           .typeError("Téléphone invalide")
           .matches(/^[0-9]+$/, "Le téléphone invalide")
           .required("Le téléphone est requis")
-          .min(9, "Le téléphone invalide")
-          .max(10, "Le téléphone invalide"),
+          .min(9, "Le téléphone invalide"),
 }).required();
 
 type params = {
-  to: string,
-  start: string,
-  end: string
+  session: any,
+  training: any
 }
-function Inscription({to, start, end}: params) {
+function Inscription({session, training}: params) {
   const [section, setSection] = useState("FORM");
   const [messageSent, setMessageSent] = useState(false);
   const { register, handleSubmit: handleFormSubmit, reset, formState: { errors } } = useForm({
@@ -40,26 +40,34 @@ function Inscription({to, start, end}: params) {
   const onSubmit = async (data) => {
     try {
       setSection("SAVING");
-      const start = new Date(2022, 8, 5, 0, 0, 0);
-      const end = new Date(2022, 8, 11, 0, 0, 0);
-      const reference = "INITIALISATION-WEB-05-09-11-2022";
+      const reference = slugify(`${training.title} ${dateFormat(session.startDate)}`);
       let response  = await fetch(`${process.env.BACKOFFICE_URL}/training-forms`, {
         method: 'POST',
         headers: {
           'Accept': 'application/json, text/plain ',
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({...data, reference, start, end, phone: `+${data.phoneIndex} ${data.phone}`})
+        body: JSON.stringify({
+          ...data, 
+          reference,
+          session: session['_id'],
+          training: training['_id'],
+          phoneIndex: data.phoneIndex,
+          phone: data.phone
+        })
       });
       await response.json();
-
       response  = await fetch('/api/contact', {
         method: 'POST',
         headers: {
           'Accept': 'application/json, text/plain ',
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({...data, message: to, title: `Nouvelle inscription de ${data.firstName} ${data.lastName}`, phone: `+${data.phoneIndex} ${data.phone}`})
+        body: JSON.stringify({
+          ...data, 
+          message: `${reference} du ${dateFormat(session.startDate)} au ${dateFormat(training.endDate)}`, 
+          title: `Nouvelle inscription de ${data.firstName} ${data.lastName}`, phone: `+${data.phoneIndex} ${data.phone}`
+        })
       })
       await response.json();
       setMessageSent(true);
@@ -363,7 +371,7 @@ function Inscription({to, start, end}: params) {
                     <p className='text-center font-bold'>
                       Nous ne traitons les données recueillies que pour faciliter la prise de contact.
                     </p>
-                    <NetworkShared path="formations/initiation-web"/>
+                    <NetworkShared path={'/'+slugify(`${training.title}-${training.id}`)}/>
                   </div> 
                 </form>
               )

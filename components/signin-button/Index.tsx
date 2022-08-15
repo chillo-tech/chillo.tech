@@ -1,12 +1,19 @@
+import Link from 'next/link'
 import React from 'react'
 
-function SigninButton() {
+interface Params {
+  link: string,
+  label: string
+}
+function SigninButton({link, label}: Params) {
   return (
     <div className="inscription text-center">
-    <a href="#inscription" className="rounded-lg bg-blue-200 border-2 border-blue-700 font-extralight px-3 py-2 text-xl">
-      Je m'inscris
-    </a>
-  </div>
+      <Link href={link}>
+        <a href={link} className="rounded-lg bg-blue-200 border-2 border-blue-700 font-extralight px-3 py-2 text-xl">
+          {label}
+        </a>
+      </Link>
+    </div>
   )
 }
 
