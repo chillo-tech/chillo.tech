@@ -107,27 +107,34 @@ function Formations() {
             />
         </div>
       </section>
-      <section className='bg-rose-50 pt-6' id="nos-formations">
-          <h2 className='font-extrabold text-center text-xl md:text-3xl py-4'>
-            Sélectionner un cours et enregistrez vous pour notre prochaine session
-          </h2>
-          <div className="mx-auto max-w-2xl px-4 py-3 sm:py-5 sm:px-2 lg:max-w-7xl lg:px-0">
-            <div className="grid grid-cols-1 gap-y-5 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-              {trainings.map((training) =>
-                <Link key={training.id} 
-                  href={{
-                    pathname: '/formations/[slug]',
-                    query: { slug: slugify(`${training.title}-${training.id}`) },
-                  }}
-                >
-                  <a>
-                    <Card data={training}/>
-                  </a>
-                </Link>
-              )}
-            </div>
-          </div>
-      </section>
+
+      {
+        (trainings && trainings.length)? (
+          <section className='bg-rose-50 pt-6' id="nos-formations">
+              <h2 className='font-extrabold text-center text-xl md:text-3xl py-4'>
+                Sélectionner un cours et enregistrez vous pour notre prochaine session
+              </h2>
+              <div className="mx-auto max-w-2xl px-4 py-3 sm:py-5 sm:px-2 lg:max-w-7xl lg:px-0">
+                <div className="grid grid-cols-1 gap-y-5 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+                  {trainings.map((training) =>
+                    <Link key={training.id} 
+                      href={{
+                        pathname: '/formations/[slug]',
+                        query: { slug: slugify(`${training.title}-${training.id}`) },
+                      }}
+                    >
+                      <a>
+                        <Card data={training}/>
+                      </a>
+                    </Link>
+                  )}
+                </div>
+              </div>
+          </section>
+
+        ): null
+      
+      }
     </Layout>
   )
 }

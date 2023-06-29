@@ -33,7 +33,7 @@ function Footer() {
           </div>
         </div>
         <div className="copyright border-top-1 text-slate-100 mt-2 font-light">
-          <div className="container py-5 text-sm mx-auto text-center border-solid border-t border-gray-600">
+          <div className="container py-10 text-sm mx-auto text-center border-solid border-t border-gray-600">
             &copy; Copyright {(new Date()).getFullYear()} chillo.tech. Tous droits réservés.
           </div>
         </div>
