@@ -5,9 +5,6 @@ async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>,
 ) {
-  console.log('====================================');
-  console.log(req);
-  console.log('====================================');
   try {
     const {url = ''} = req;
     const {data} = await axiosInstance.get(url);
