@@ -3,7 +3,18 @@ import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import * as ga from '../lib'
+import { QueryClient, QueryClientProvider } from 'react-query'
+const configs = {
+  defaultOptions: {
+    queries: {
+      staleTime: 5,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+    },
+  },
+};
 function MyApp({ Component, pageProps }: AppProps) {
+  const queryClient = new QueryClient(configs);
   const router = useRouter()
 
   useEffect(() => {
@@ -21,7 +32,9 @@ function MyApp({ Component, pageProps }: AppProps) {
     }
   }, [router.events])
 
-  return <Component {...pageProps} />
+  return   (<QueryClientProvider client={queryClient}>
+    <Component {...pageProps} />
+  </QueryClientProvider>)
 }
 
 export default MyApp

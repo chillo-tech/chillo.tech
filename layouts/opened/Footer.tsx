@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { FaFacebook, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
-import { ContactBanner } from '../../components';
+import { ContactBanner } from '@/components';
 function Footer() {
   return (
     <>

@@ -1,7 +1,7 @@
-import ImageCard from "../../components/ImageCard";
-import Layout from "../../layouts/opened";
+import ImageCard from "@/components/ImageCard";
+import Layout from "@/layouts/opened";
 import ReactMarkdown from "react-markdown";
-import JobList from "../../components/job-list/JobList";
+import JobList from "@/components/job-list/JobList";
 import { useRouter } from 'next/router';
 import { useEffect,useState } from "react";
 import Link from "next/link";
@@ -10,7 +10,7 @@ import Link from "next/link";
 function OfferDisplay() {
 
   const router = useRouter();
-  const [data, setData] = useState({});
+  const [data, setData] = useState<any>({});
   useEffect(() => {
     const read = async() => {
       try {
@@ -58,10 +58,9 @@ function OfferDisplay() {
                     <ReactMarkdown className='list-disc text-lg'>{data.Remuneration}</ReactMarkdown>
                   </div>
                   <p className="flex justify-center pb-5">
-                  <Link href={`/nous-contacter?offre=${data.id}`}>
-                    <a className="flex mx-auto justify-items-center items-center shadow-lg rounded-md bg-blue-50 border border-blue-200 p-4">
+                  <Link href={`/nous-contacter?offre=${data.id}`}  className="flex mx-auto justify-items-center items-center shadow-lg rounded-md bg-blue-50 border border-blue-200 p-4">
                       <span className='font-extralight text-xl text-blue-900'> Postuler pour cette offre</span> 
-                    </a>
+                    
                   </Link>
                   </p>
                 </div>

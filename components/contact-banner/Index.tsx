@@ -10,11 +10,10 @@ function ContactBanner() {
             Faites-nous part de votre projet,<br /> nous sommes là pour vous guider.
         </h2>
         <div className='text-center items-center flex pt-10 md:pt-0'>
-          <Link href={`/nous-contacter`}>
-            <a className="flex mx-auto justify-items-center items-center bg-blue-600 shadow-sm rounded-lg px-4 py-1">
+          <Link href={`/nous-contacter`} className="flex mx-auto justify-items-center items-center bg-blue-600 shadow-sm rounded-lg px-4 py-1">
               <FaArrowRight color='text-slate-300' className='pr-3 text-5xl cursor-pointer font-extralight'/>
               <span className='font-extralight text-2xl '> Contactez nous</span>  
-            </a>
+            
           </Link>
         </div>
       </div>

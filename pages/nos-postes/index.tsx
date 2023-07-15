@@ -1,9 +1,9 @@
 import Image from 'next/image'
 import React from 'react'
-import { Title } from '../../components'
-import ImageCard from '../../components/ImageCard'
-import JobList from '../../components/job-list/JobList'
-import Layout from '../../layouts/opened'
+import { Title } from '@/components'
+import ImageCard from '@/components/ImageCard'
+import JobList from '@/components/job-list/JobList'
+import Layout from '@/layouts/opened'
 
 function Contact() {
   return (

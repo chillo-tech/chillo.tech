@@ -3,7 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { useState } from 'react';
 import { NetworkShared } from "..";
-import { dateFormat, slugify } from "../../utils";
+import { dateFormat, slugify } from "@/utils";
 import { ObjectID } from "bson";
 const schema = yup.object({
     id: yup.string(),

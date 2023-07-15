@@ -35,9 +35,9 @@ function JobList() {
             </p>
           </div>
           <div className="grid gap-4 md:grid-cols-2 my-10 px-30">
-            {jobs.map((job) => (
-              <Link href={`/nos-postes/${job.id}`} key={job.id}>
-                <a className="job-item shadow-lg rounded-md bg-blue-50 border border-blue-200 p-4">
+            {jobs.map((job:any) => (
+              <Link href={`/nos-postes/${job.id}`} key={job.id} className="job-item shadow-lg rounded-md bg-blue-50 border border-blue-200 p-4">
+                <>
                   <h3 className="font-bold text-xl mb-3 md:pr-48 text-blue-900">{job.title}</h3>
                   <div className="flex justify-between items-center">
                     <p className="text-slate-400">
@@ -45,7 +45,7 @@ function JobList() {
                     </p>
                     <span className="bg-green-300 p-2 rounded-md text-green-700">{job.tags}</span>
                   </div>
-                </a>
+                  </>
               </Link>
             ))}
           </div>

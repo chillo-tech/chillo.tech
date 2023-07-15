@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
-import { HEADER_LINKS } from '../../app-utils';
+import { HEADER_LINKS } from '@/app-utils';
 import { MenuIcon, XIcon } from '@heroicons/react/solid'
 import { useRouter } from 'next/router';
 
@@ -15,14 +15,14 @@ function Header(props) {
         <nav className='container mx-auto flex items-center justify-between p-2 md:p-0'>
             <div className="logo">
               <Link href='/'>
-                  <a>
+                  <>
                     <span className='md:hidden'>
                       <Image width="120" height="35" src="/images/chillo-services.png" alt="chillo services"/>
                     </span>
                     <span className='hidden md:block'>
                       <Image width="200" height="60" src="/images/chillo-services.png" alt="chillo services"/>
                     </span>
-                  </a>
+                  </>
                 </Link>
             </div>
             <div className="nav">
@@ -37,9 +37,8 @@ function Header(props) {
               <div className="md-header-links hidden md:flex">
                 {
                   HEADER_LINKS.map((link)=> (
-                    <Link href={`/${link.to}`} key={link.to}>
-                      <a className="block py-6 px-2 text-gray-500 font-light text-lg hover:text-green-500 transition duration-300"
-                      >{link.label}</a>
+                    <Link href={`/${link.to}`} key={link.to} className="block py-6 px-2 text-gray-500 font-light text-lg hover:text-green-500 transition duration-300"
+                      >{link.label}
                     </Link>
                   ))
                 }

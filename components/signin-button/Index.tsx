@@ -8,10 +8,8 @@ interface Params {
 function SigninButton({link, label}: Params) {
   return (
     <div className="inscription text-center">
-      <Link href={link}>
-        <a href={link} className="rounded-lg bg-blue-200 border-2 border-blue-700 font-extralight px-3 py-2 text-xl">
+      <Link href={link} className="rounded-lg bg-blue-200 border-2 border-blue-700 font-extralight px-3 py-2 text-xl">
           {label}
-        </a>
       </Link>
     </div>
   )
