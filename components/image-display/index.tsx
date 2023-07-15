@@ -18,7 +18,7 @@ function ImageDisplay({
     if(base64) {
       return `data:image/jpg;base64,${image.path}`
     }
-    return `${process.env.BACKOFFICE_API}/assets/${image.id}`;
+    return `${process.env.BACKOFFICE_URL}/assets/${image.id}`;
   }
 
   return (
