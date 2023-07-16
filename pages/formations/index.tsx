@@ -12,12 +12,13 @@ import {
   FaStar,
   FaUsers,
 } from 'react-icons/fa';
-import { slugify } from '@/utils';
+import { formation, slugify } from '@/utils';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useQuery } from 'react-query';
 import { fetchData, handleError, search } from '@/services';
 import ImageDisplay from '@/components/image-display';
+import Debug from '@/components/Debug';
 
 function Formations() {
   const router = useRouter();
@@ -35,7 +36,7 @@ function Formations() {
     queryFn: () =>
       fetchData({
         path: `/api/backoffice/Formation`,
-        fields: '*,*.*',
+        fields: formation,
       }),
     onSuccess: ({ data: {data} }: any) => {
       setTrainings(data);
@@ -133,7 +134,24 @@ function Formations() {
           </h2>
           <div className="mx-auto max-w-2xl px-4 py-3 sm:py-5 sm:px-2 lg:max-w-7xl lg:px-0">
             <div className="grid grid-cols-1 gap-y-5 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 xl:gap-x-8">
-              {trainings.map((training: any) => (
+              {trainings.sort((traininga: any, trainingb: any) => {
+                  const {session: asession} = traininga;
+                  const {session: bsession} = trainingb;
+                  let sessionaDate = new Date(2299);
+                  let sessionbDate = new Date(2299);
+                  if(asession && asession.length) {
+                    const recentSession = asession[0];
+                    const {Session_id: {date_heure}}= recentSession;
+                    sessionaDate = new Date(date_heure);
+                  }
+                  if(bsession && bsession.length) {
+                    const recentSession = bsession[0];
+                    const {Session_id: {date_heure}}= recentSession;
+                    sessionbDate = new Date(date_heure);
+                  }
+                  return new Date(sessionbDate).getTime() - new Date(sessionaDate).getTime();
+                }
+              ).map((training: any) => (
                 <Link
                   key={training.id}
                   passHref={true}

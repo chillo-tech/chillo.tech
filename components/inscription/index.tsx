@@ -37,7 +37,7 @@ function Inscription({session, training}: params) {
     resolver: yupResolver(schema),
     defaultValues: {id: '', message: '', firstName: '', lastName: '',  email: '', phone: '', file: '', phoneIndex: ''}
   });
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: any) => {
     try {
       setSection("SAVING");
       const reference = slugify(`${training.title} ${dateFormat(session.startDate)}`);

@@ -16,9 +16,9 @@ function Card({ data }: any) {
         <p className="grid grid-cols-2 mt-1 text-sm text-gray-400">
           <span className="text-left flex items-center justify-start">
             <FaRegChartBar />
-            {data.niveau === 'BEGINER' && <span className="mx-1">Débutant</span>}
-            {data.niveau === 'INTERMEDIATE' && <span className="mx-1">Intermediaire</span>}
-            {data.niveau === 'CONFIRMED' && <span className="mx-1">Confirmé</span>}
+            {data.niveau === 'DEBUTANT' && <span className="mx-1">Débutant</span>}
+            {data.niveau === 'INTERMEDIAIRE' && <span className="mx-1">Intermediaire</span>}
+            {data.niveau === 'CONFIRME' && <span className="mx-1">Confirmé</span>}
           </span>
           <span className="text-right flex items-center justify-end">
             <FaRegClock />

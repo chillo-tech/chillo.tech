@@ -1,29 +1,30 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Layout from '@/../layouts/opened';
-import ReactMarkdown from 'react-markdown';
 import { NetworkShared, SigninButton, Tabs } from '@/../components';
-import { dateFormat, slugify } from '@/../utils';
+import { dateFormat, formation, slugify } from '@/../utils';
 import Inscription from '@/../components/inscription';
-import Head from 'next/head';
-import { useRouter } from 'next/router';
 import { useQuery } from 'react-query';
 import { fetchData } from '@/services';
 import ImageDisplay from '@/components/image-display';
 import RenderHtmlContent from '@/components/RenderHtmlContent';
+import Metadata from '@/components/metadata';
 
 function TrainingInfos({ index }: any) {
-  const router = useRouter();
   const [training, setTraining] = useState<any>();
   const [nextSession, setNextSession] = useState<any>({});
   const getNextSession = (training: any) => {
-    const sessions = training.sessions || [];
+    const sessions = training.session || [];
     if (sessions.length) {
       const nextSessions =
         sessions
           .sort(
-            (a: any, b: any) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+            (a: any, b: any) =>
+              new Date(a.Session_id.date_heure).getTime() -
+              new Date(b.Session_id.date_heure).getTime()
           )
-          .filter((a: any) => new Date(a.startDate).getTime() - new Date().getTime() > 0) || [];
+          .filter(
+            (a: any) => new Date(a.Session_id.date_heure).getTime() - new Date().getTime() > 0
+          ) || [];
       if (nextSessions.length) {
         setNextSession(nextSessions[0]);
       }
@@ -38,35 +39,35 @@ function TrainingInfos({ index }: any) {
     queryFn: () =>
       fetchData({
         path: `/api/backoffice/Formation/${index}`,
-        fields: '*,*.*',
+        fields: formation,
       }),
     onSuccess: (data) => {
       setTraining(data.data.data);
+      getNextSession(data.data.data);
     },
   });
   return (
     <Layout>
       {training ? (
         <>
-          <Head>
-            <title>CHILLO SERVICES | {training.titre}</title>
-            <meta property="og:title" content={`CHILLO SERVICES - ${training.titre}`} />
-            <meta name="description" content={training.abstract} />
-            <meta name="og:description" content={training.abstract} />
-          </Head>
+          <Metadata entry={training} />
+
           <section className="header bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 py-4 px-2 md:px-0">
             <div className="container mx-auto grid gap-4 md:grid-cols-3 items-stretch">
-              <div className="description p-4 md:col-span-2 text-white flex flex-col justify-center">
+              <div className="description md:col-span-2 text-white flex flex-col justify-center">
                 <h1 className="from-slate-900 font-extrabold text-3xl text-center md:text-left md:text-4xl">
                   {training.titre}
                 </h1>
-                <p className="mb-3 text-extrabold my-7 text-4xl text-center md:text-left">
+                <div className="mb-3 text-extrabold my-7 text-4xl text-center md:text-left">
                   <span className="text-2xl">{training.duree} heures</span>
                   <span className="mx-2 text-2xl">|</span>
                   <span className="text-2xl">{training.prix}</span>
-                </p>
-                <div className="grid grid-cols-2 gap-4 items-center">
-                <RenderHtmlContent content={training.prerequis} />
+                  <RenderHtmlContent classes="text-left text-sm ml-4 font-light text"
+                    content={training.concept_prix[0].ConceptPrix_id.concept_prix}
+                  />
+                </div>
+                <div className="grid md:grid-cols-2 gap-4 items-center">
+                  <RenderHtmlContent content={training.prerequis} />
                   <ImageDisplay
                     imageClasses="object-cover overflow-hidden rounded-lg w-full h-full"
                     wrapperClasses="relative w-full h-60 object-cover overflow-hidden rounded-lg"
@@ -76,15 +77,25 @@ function TrainingInfos({ index }: any) {
               </div>
               {Object.keys(nextSession).length ? (
                 <div className="links text-2xl p-4 bg-slate-50 border-2 border-blue-700 rounded-lg flex flex-col justify-between">
-                  <p className="text-2xl text-slate-700 text-extrabold text-center">
-                    Prochaine session <br />
-                    du
-                    <span className="text-3xl ml-1 font-bold">
-                      {dateFormat(nextSession?.startDate)}
-                    </span>
-                    <span className="text-3xl mx-1">au</span>
-                    <span className="text-3xl font-bold">{dateFormat(nextSession.endDate)}</span>
-                  </p>
+                  <div className="text-2xl text-slate-700 text-extrabold text-center">
+                    Prochaine session le
+                    <p className="text-3xl ml-1 font-bold">
+                      {dateFormat(nextSession?.Session_id.date_heure)}
+                    </p>
+                    <p>
+                      <span className="text-3xl mx-1">Pendant</span>
+                      <span className="text-3xl font-bold">{nextSession?.Session_id.duree}</span>
+                    </p>
+                    <RenderHtmlContent
+                      classes="text-left text-sm mt-4"
+                      content={nextSession?.Session_id.horaire_formation}
+                    />
+                    <p>
+                      <span className="text-3xl mx-1">
+                        La formation est {nextSession?.Session_id.type_formation}
+                      </span>
+                    </p>
+                  </div>
                   <NetworkShared
                     path={`formations/${slugify(`${training.titre}-${training.id}`)}`}
                   />
@@ -111,7 +122,7 @@ function TrainingInfos({ index }: any) {
                 links={[{ label: 'Description' }, { label: 'Programme' }, { label: 'Et après' }]}
               >
                 <div>
-                <RenderHtmlContent content={training.description} />
+                  <RenderHtmlContent content={training.description} />
                 </div>
                 <RenderHtmlContent content={training.programme} />
                 <RenderHtmlContent content={training.apres} />
