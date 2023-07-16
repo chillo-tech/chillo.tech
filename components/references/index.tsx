@@ -1,41 +1,37 @@
-import Image from 'next/image';
+import { fetchData, handleError } from '@/services';
+import { customers } from '@/utils';
 import React, { useState, useEffect } from 'react';
-function GraphCMSImageLoader({ src, width }) {
-  const relativeSrc = (src) => src;
-
-  return `${process.env.BACKOFFICE_URL}${src}`;
-}
+import { useQuery } from 'react-query';
+import ImageDisplay from '../image-display';
 function References() {
+  const [isError, setIsError] = useState(false);
   const [references, setReferences] = useState([]);
-  useEffect(() => {
-    const read = async () => {
-      try {
-        const response = await fetch(`${process.env.BACKOFFICE_URL}/chillo-services-customers`);
-        const data = await response.json();
-        setReferences(data);
-      } catch (error) {
-        console.log(error);
-        setReferences([]);
-      }
-    };
-    read();
-  }, []);
+  const { isLoading } = useQuery<any>({
+    queryKey: ['user-customers'],
+    queryFn: () =>
+      fetchData({
+        path: `/api/backoffice/customers`,
+        fields: customers,
+      }),
+    onSuccess: ({ data: { data } }: any) => {
+      setReferences(data);
+    },
+    onError: (error: any) => {
+      setIsError(true), handleError(error);
+    },
+    refetchOnWindowFocus: false,
+  });
   return (
     <>
       {references && references.length ? (
         <div className="container mx-auto items-center text-center grid grid-cols-2 md:grid-cols-4 gap-4 references my-14">
-          {references.map((item, index) => (
-            <picture className="flex justify-center" key={`reference-${index}`}>
-              <source
-                srcSet={`${process.env.BACKOFFICE_URL}${item.image[0].url}`}
-                type="image/webp"
-              />
-              <img
-                src={`${process.env.BACKOFFICE_URL}${item.image[0].url}`}
-                alt={`${item.image[0].alternativeText}`}
-                className="image"
-              />
-            </picture>
+          {references.map((item: any, index: number) => (
+            <ImageDisplay
+              key={`image-${index}`}
+              imageClasses="object-contain overflow-hidden rounded-lg w-full h-full"
+              wrapperClasses="relative w-full h-60 object-cover overflow-hidden rounded-lg"
+              image={item.image}
+            />
           ))}
         </div>
       ) : null}

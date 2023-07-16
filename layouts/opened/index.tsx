@@ -2,7 +2,7 @@ import Head from 'next/head';
 import Footer from './Footer';
 import React from 'react';
 import Header from './Header';
-const Layout = ({ children }) =>{
+const Layout = ({ children }: any) =>{
   return (
     <section className="bg-gradient-to-r to-slate-100 via-purple-50 from-blue-100 flex flex-col justify-between min-h-screen">
         <Head>

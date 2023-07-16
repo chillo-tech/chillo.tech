@@ -1,21 +1,27 @@
+import { fetchData, handleError } from '@/services';
+import { emplois, slugify } from '@/utils';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { useQuery } from 'react-query';
 
 function JobList() {
   const [jobs, setJobs] = useState([]);
-  useEffect(() => {
-    const read = async () => {
-      try {
-        const response = await fetch(`${process.env.BACKOFFICE_URL}/chillo-services-jobs`);
-        const data = await response.json();
-        setJobs(data);
-      } catch (error) {
-        console.log(error);
-        setJobs([]);
-      }
-    };
-    read();
-  }, []);
+  const [isError, setIsError] = useState(false);
+  const { isLoading } = useQuery<any>({
+    queryKey: ['user-emplois'],
+    queryFn: () =>
+      fetchData({
+        path: `/api/backoffice/emplois`,
+        fields: emplois,
+      }),
+    onSuccess: ({ data: {data} }: any) => {
+      setJobs(data);
+    },
+    onError: (error: any) => {
+      setIsError(true), handleError(error);
+    },
+    refetchOnWindowFocus: false,
+  });
   return (
     <>
       {jobs && jobs.length ? (
@@ -36,7 +42,7 @@ function JobList() {
           </div>
           <div className="grid gap-4 md:grid-cols-2 my-10 px-30">
             {jobs.map((job:any) => (
-              <Link href={`/nos-postes/${job.id}`} key={job.id} className="job-item shadow-lg rounded-md bg-blue-50 border border-blue-200 p-4">
+              <Link href={`/nos-postes/${job.id}-${slugify(job.title)}`} key={job.id} className="job-item shadow-lg rounded-md bg-blue-50 border border-blue-200 p-4">
                 <>
                   <h3 className="font-bold text-xl mb-3 md:pr-48 text-blue-900">{job.title}</h3>
                   <div className="flex justify-between items-center">

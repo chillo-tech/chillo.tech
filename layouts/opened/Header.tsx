@@ -6,7 +6,7 @@ import { HEADER_LINKS } from '@/app-utils';
 import { MenuIcon, XIcon } from '@heroicons/react/solid'
 import { useRouter } from 'next/router';
 
-function Header(props) {
+function Header() {
   const router = useRouter();
   const [showMenu, setshowMenu] = useState(false)
   return (

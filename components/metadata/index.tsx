@@ -6,8 +6,8 @@ function Metadata({entry}: any) {
   const [description, setDescription] = useState();
   const keywords = "centre de formation, centre formation, centre de form, formation informatique formation en ligne formation en intra, formation dans vos locaux, formation certifiante, financements cpf, malkoff, Paris, Ile de france | ESIC";
   useMemo(() => {
-    if(entry && entry.metadonnees && entry.metadonnees.titre) {
-      setTitle(entry.metadonnees.titre);
+    if(entry && entry.metadonnees && entry.metadonnees[0].titre) {
+      setTitle(entry.metadonnees[0].titre);
     } else if(entry?.libelle) {
       setTitle(entry?.libelle);
     } else if(entry?.titre) {
@@ -15,8 +15,8 @@ function Metadata({entry}: any) {
     }else if(entry?.nom) {
       setTitle(entry?.nom);
     }
-    if(entry && entry.metadonnees && entry.metadonnees.description) {
-      setDescription(entry.metadonnees.description.replace(/(<([^>]+)>)/ig, ''));
+    if(entry && entry.metadonnees && entry.metadonnees[0].description) {
+      setDescription(entry.metadonnees[0].description.replace(/(<([^>]+)>)/ig, ''));
     } else if(entry?.description) {
       setDescription(entry?.description);
     }

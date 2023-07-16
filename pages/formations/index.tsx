@@ -49,7 +49,7 @@ function Formations() {
   return (
     <Layout>
       <Head>
-        <title>CHILLO SERVICES | Nos formations</title>
+        <title>Nos formations</title>
         <meta property="og:title" content="CHILLO SERVICES - Devenez developpeur" />
         <meta
           name="description"

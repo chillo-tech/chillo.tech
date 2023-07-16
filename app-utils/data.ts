@@ -12,6 +12,10 @@ export const HEADER_LINKS = [
     "to": "#ils-nous-font-confiance",
   },
   {
+    "label": "Coaching",
+    "to": "coaching",
+  },
+  {
     "label": "Nos formations",
     "to": "formations",
   },
