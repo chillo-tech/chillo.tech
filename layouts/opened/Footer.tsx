@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaFacebook, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
+import { FaFacebook, FaInstagram, FaLinkedinIn, FaWhatsapp } from 'react-icons/fa';
 import { ContactBanner } from '@/components';
 import Link from 'next/link';
 function Footer() {
@@ -47,10 +47,15 @@ function Footer() {
             </div>
           </div>
         </div>
-        <div className="copyright border-top-1 text-slate-100 mt-2 font-light">
+        <div className="copyright border-top-1 text-slate-100 mt-2 font-light relative">
           <div className="container py-10 text-sm mx-auto text-center border-solid border-t border-gray-600">
             &copy; Copyright {new Date().getFullYear()} chillo.tech. Tous droits réservés.
+            <Link href="https://wa.me/qr/5HRXKL6YBEKKL1" target="_blank" passHref={true} 
+              className='absolute bottom-44 right-4 md:right-20 text-6xl text-green-600'>
+            <FaWhatsapp />
+          </Link>
           </div>
+         
         </div>
       </div>
     </>

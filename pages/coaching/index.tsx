@@ -5,6 +5,7 @@ import Metadata from '@/components/metadata';
 import Layout from '@/layouts/opened';
 import { fetchData } from '@/services';
 import { page } from '@/utils';
+import Link from 'next/link';
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 
@@ -34,15 +35,15 @@ function Coaching() {
                 wrapperClasses="absolute w-full h-full object-cover overflow-hidden rounded-lg border-2 border-blue-700"
                 image={data.image}
               />
-              <div className="relative py-32 px-10 flex items-start bg-slate-900/70 rounded-lg">
-                <article className='w-1/2 z-50'>
-                  <RenderHtmlContent content={data.about} classes="text-3xl font-extralight text-slate-200 mb-24" />
-                  <a
+              <div className="relative py-16 md:px-10 px-4 flex items-start bg-slate-900/70 rounded-lg">
+                <article className='md:w-1/2 z-50'>
+                  <RenderHtmlContent content={data.about} classes="md:text-3xl font-extralight text-slate-200 mb-12" />
+                  <Link
                   href="https://calendly.com/chillo-tech/30min"
-                  className="rounded-lg bg-blue-900 text-white text-xl flex-none font-extralight px-4 py-4"
+                  className="rounded-lg bg-blue-900 text-white md:text-xl text-sm flex-none font-extralight px-4 py-4"
                 >
                   Réservez un créneau de 30 minutes (20€)
-                </a>
+                </Link>
                 </article>
               </div>
             </div>
