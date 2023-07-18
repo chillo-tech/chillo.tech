@@ -28,15 +28,15 @@ function OfferDisplay({ index }: any) {
   });
   return (
     <>
-      <Head>
-        <title>{data.title}</title>
-        <meta property="og:title" content={data.title} />
-        <meta name="description" content={data.about}/>
-        <meta name="og:description" content={data.about}/>
-      </Head>
       <Layout>
         {data && data.image ? (
           <>
+          <Head>
+            <title>{data.title}</title>
+            <meta property="og:title" content={data.title} />
+            <meta name="description" content={data.about}/>
+            <meta name="og:description" content={data.about}/>
+          </Head>
             <section className="container job-item mx-auto my-6">
               <section className="grid grid-cols-1 md:grid-cols-4 md:gap-10">
                 <div className="hidden md:block">

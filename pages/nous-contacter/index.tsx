@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import { useMutation } from 'react-query';
 import { sendData } from '@/services';
 import Message from '@/components/Message';
+import Head from 'next/head';
 const schema = yup
   .object({
     message: yup.string().required('Ce champ est requis'),
@@ -69,7 +70,20 @@ function Contact() {
     mutation.mutate(message);
   };
   return (
+    <>
     <Layout>
+    <Head>
+        <title>Ccontact</title>
+        <meta property="og:title" content="Ccontact" />
+        <meta
+          name="description"
+          content="Vous répondons assez rapidement aux questions qui nous sont posées"
+        />
+        <meta
+          name="og:description"
+          content="Vous répondons assez rapidement aux questions qui nous sont posées"
+        />
+      </Head>
       <section className="container mx-auto py-5">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div className="text-blue-900 font-extralight infos bg--900 py-6 px-4 flex flex-col justify-center">
@@ -433,6 +447,9 @@ function Contact() {
         </div>
       </section>
     </Layout>
+
+    
+</>
   );
 }
 

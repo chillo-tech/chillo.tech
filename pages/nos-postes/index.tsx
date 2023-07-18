@@ -9,6 +9,7 @@ import Head from 'next/head';
 function Contact() {
   return (
     <>
+      <Layout>
       <Head>
         <title>Nos postes</title>
         <meta property="og:title" content="Nos postes" />
@@ -21,7 +22,6 @@ function Contact() {
           content="Rejoignez nos équipes nos postes sont ouverts"
         />
       </Head>
-      <Layout>
         <section className="container mx-auto my-6">
           <section className="grid grid-cols-1 md:grid-cols-3 md:gap-10">
             <div className="hidden md:block">
