@@ -28,12 +28,7 @@ function OfferDisplay({ index }: any) {
   });
   return (
     <>
-      <Head>
-        <title>{data.title}</title>
-        <meta property="og:title" content={data.title} />
-        <meta name="description" content={data.about}/>
-        <meta name="og:description" content={data.about}/>
-      </Head>
+     
       <Layout>
         {data && data.image ? (
           <>
