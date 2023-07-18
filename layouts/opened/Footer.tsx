@@ -33,11 +33,20 @@ function Footer() {
                 <Link href="https://www.linkedin.com/company/chillo-tech" passHref={true}>
                   <FaLinkedinIn color="text-slate-300" className="px-3 text-6xl" />
                 </Link>
-                <Link href="https://www.facebook.com/profile.php?id=100084306755977" passHref={true}>
+                <Link
+                  href="https://www.facebook.com/profile.php?id=100084306755977"
+                  passHref={true}
+                >
                   <FaInstagram className="px-3 text-6xl" />
                 </Link>
-                <Link href="https://www.facebook.com/profile.php?id=100084306755977" passHref={true}>
+                <Link
+                  href="https://www.facebook.com/profile.php?id=100084306755977"
+                  passHref={true}
+                >
                   <FaFacebook className="px-3 text-6xl" />
+                </Link>
+                <Link href="https://wa.me/33761705745" target="_blank" passHref={true}>
+                  <FaWhatsapp className="px-3 text-6xl" />
                 </Link>
               </div>
               <div className="py-2">
@@ -50,12 +59,7 @@ function Footer() {
         <div className="copyright border-top-1 text-slate-100 mt-2 font-light relative">
           <div className="container py-10 text-sm mx-auto text-center border-solid border-t border-gray-600">
             &copy; Copyright {new Date().getFullYear()} chillo.tech. Tous droits réservés.
-            <Link href="https://wa.me/qr/5HRXKL6YBEKKL1" target="_blank" passHref={true} 
-              className='absolute bottom-44 right-4 md:right-20 text-6xl text-green-600'>
-            <FaWhatsapp />
-          </Link>
           </div>
-         
         </div>
       </div>
     </>
