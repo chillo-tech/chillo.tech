@@ -1,3 +1,7 @@
+const sessions =`
+sessions.Session_id.*,
+sessions.Session_id.prix.*
+`;
 const base = `
 *,
 status,
@@ -26,12 +30,14 @@ const IMAGE_PARAMS = `
     image.title,
     image.type
 `;
+/*
 const sessions = `
 session.Session_id.date_heure,
 session.Session_id.duree,
 session.Session_id.horaire_formation,
 session.Session_id.type_formation
-`;
+`;*/
+
 const articles = `
 articles.article_id.title,
 articles.article_id.about,

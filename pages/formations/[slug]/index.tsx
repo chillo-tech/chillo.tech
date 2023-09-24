@@ -13,7 +13,7 @@ function TrainingInfos({ index }: any) {
   const [training, setTraining] = useState<any>();
   const [nextSession, setNextSession] = useState<any>({});
   const getNextSession = (training: any) => {
-    const sessions = training.session || [];
+    const sessions = training.sessions || [];
     if (sessions.length) {
       const nextSessions =
         sessions
@@ -58,14 +58,23 @@ function TrainingInfos({ index }: any) {
                 <h1 className="from-slate-900 font-extrabold text-3xl text-center md:text-left md:text-4xl">
                   {training.titre}
                 </h1>
-                <div className="mb-3 text-extrabold my-7 text-4xl text-center md:text-left">
-                  <span className="text-2xl">{training.duree} heures</span>
-                  <span className="mx-2 text-2xl">|</span>
-                  <span className="text-2xl">{training.prix}</span>
-                  <RenderHtmlContent classes="text-left text-sm ml-4 font-light text"
-                    content={training.concept_prix[0].ConceptPrix_id.concept_prix}
-                  />
-                </div>
+                {Object.keys(nextSession).length ? (
+                  <>
+                    <div className="mb-3 text-extrabold my-7 text-4xl text-center md:text-left">
+                      <span className="text-2xl">{nextSession.Session_id.duree}</span>
+                      <span className="mx-2 text-2xl">|</span>
+                      <span className="text-2xl">{nextSession.Session_id.prix[0].libelle}</span>
+                      <RenderHtmlContent
+                        classes="text-left text-sm font-light text"
+                        content={nextSession.Session_id.prix[0].description}
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <div className="mb-3 text-extrabold my-7 text-4xl text-center md:text-left">
+                    <span className="text-2xl">{training.duree} heures</span>
+                  </div>
+                )}
                 <div className="grid md:grid-cols-2 gap-4 items-center">
                   <RenderHtmlContent content={training.prerequis} />
                   <ImageDisplay

@@ -1,12 +1,10 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useState } from 'react';
-import { NetworkShared } from '..';
 import { dateFormat, slugify } from '@/utils';
 import { useRouter } from 'next/router';
 import { useMutation } from 'react-query';
-import { sendData } from '@/services';
+import { patchData } from '@/services';
 import Message from '../Message';
 const schema = yup
   .object({
@@ -55,21 +53,26 @@ function Inscription({ session, training }: params) {
     error.preventDefault();
     router.push('/');
   };
-
+const Session_id =1;
+const Formation_id =16;
+const basePath = "https://backoffice.chillo.fr/items/Session/6";
   const mutation = useMutation({
-    mutationFn: (message: any) => sendData('/api/backoffice/candidate', message),
+    mutationFn: (candidate: any) => patchData(
+      `/api/backoffice/Session/${session.Session_id.id}`, 
+      {candidats:{ create: [{candidate_id: candidate}]}}
+    ),
   });
   const onSubmit = async (data: any) => {
-    const reference = slugify(`${training.titre} ${dateFormat(training.session[0]['Session_id']['date_heure'])}`);
+    const reference = slugify(`${training.titre} ${dateFormat(training.sessions[0]['Session_id']['date_heure'])}`);
     const message = {
       ...data,
       reference,
-      session: training.session[0]['Session_id']['date_heure'],
+      session: training.sessions[0]['Session_id']['date_heure'],
       training: training['titre'],
       phoneIndex: data.phoneIndex,
       phone: data.phone,
     };
-    mutation.mutate(message);
+    mutation.mutate(data);
   };
   return (
     <>
@@ -92,8 +95,8 @@ function Inscription({ session, training }: params) {
       {mutation.isSuccess ? (
         <Message
           type="success"
-          firstMessage="Nous avons reçu votre message."
-          secondMessage="Une réponse personnalisée vous sera apportée dans les meilleurs délais."
+          firstMessage="Merci de vous être incrit à cette session"
+          secondMessage="Nous allons revenir vers vous assez vite pour bien préparer votre particpation."
           action={handleError}
           actionLabel="Retourner à l'accueil"
         />

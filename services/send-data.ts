@@ -8,4 +8,13 @@ const sendData = (endpoint: string, data: any) => {
     }
   )
 }
-export {sendData};
+const patchData = (endpoint: string, data: any) => {
+  return axios.patch(
+    endpoint, 
+    data, 
+    {
+      headers: {"Content-Type": "application/json"}
+    }
+  )
+}
+export {sendData, patchData};
