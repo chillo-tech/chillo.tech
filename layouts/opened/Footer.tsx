@@ -57,8 +57,15 @@ function Footer() {
           </div>
         </div>
         <div className="copyright border-top-1 text-slate-100 mt-2 font-light relative">
-          <div className="container py-10 text-sm mx-auto text-center border-solid border-t border-gray-600">
-            &copy; Copyright {new Date().getFullYear()} chillo.tech. Tous droits réservés.
+          <div className="container flex py-2 justify-between text-sm mx-auto text-center border-solid border-t border-gray-600">
+            <span>
+              &copy; Copyright {new Date().getFullYear()} chillo.tech. Tous droits réservés.
+            </span>
+            <div className="liens">
+              <Link href="/politique-de-confidentialite">
+                Politique de confidentialité
+              </Link>
+            </div>
           </div>
         </div>
       </div>
