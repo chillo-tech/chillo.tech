@@ -22,7 +22,7 @@ const schema = yup
       .typeError('Téléphone invalide')
       .matches(/^[0-9]+$/, 'Le téléphone invalide')
       .required('Le téléphone est requis')
-      .min(9, 'Le téléphone invalide'),
+      .min(8, 'Le téléphone invalide'),
   })
   .required();
 
