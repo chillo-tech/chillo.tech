@@ -185,11 +185,11 @@ function Attente({ index }: any) {
 export async function getServerSideProps(context: any) {
   const { params } = context;
   const { slug } = params;
-
+  const slugparts = slug.split('-');
   return {
     props: {
       ...params,
-      index: slug.split('-')[0],
+      index: slugparts[slugparts.length - 1]
     },
   };
 }

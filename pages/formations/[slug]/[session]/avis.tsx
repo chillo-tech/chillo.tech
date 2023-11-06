@@ -246,11 +246,13 @@ function Contact({ index, sessionId }: any) {
 export async function getServerSideProps(context: any) {
   const { params } = context;
   const { slug, session } = params;
+  const slugparts = slug.split('-');
+  const sessionparts = session.split('-');
   return {
     props: {
       ...params,
-      index: slug.split('-')[0],
-      sessionId: session.split('-')[0]
+      index: slugparts[slugparts.length - 1],
+      sessionId: sessionparts[sessionparts.length - 1]
     },
   };
 }
