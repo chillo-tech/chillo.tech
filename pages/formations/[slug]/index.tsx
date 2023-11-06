@@ -8,6 +8,7 @@ import { fetchData } from '@/services';
 import ImageDisplay from '@/components/image-display';
 import RenderHtmlContent from '@/components/RenderHtmlContent';
 import Metadata from '@/components/metadata';
+import Debug from '@/components/Debug';
 
 function TrainingInfos({ index }: any) {
   const [training, setTraining] = useState<any>();
@@ -96,7 +97,7 @@ function TrainingInfos({ index }: any) {
                       <span className="text-3xl font-bold">{nextSession?.Session_id.duree}</span>
                     </p>
                     <RenderHtmlContent
-                      classes="text-left text-sm mt-4"
+                      classes="text-center text-xl my-6 !list-none"
                       content={nextSession?.Session_id.horaire_formation}
                     />
                     <p>
@@ -155,11 +156,11 @@ function TrainingInfos({ index }: any) {
 export async function getServerSideProps(context: any) {
   const { params } = context;
   const { slug } = params;
-
+  const parts = slug.split('-')
   return {
     props: {
       ...params,
-      index: slug.split('-')[0],
+      index: parts[parts.length - 1]
     },
   };
 }

@@ -1,24 +1,18 @@
-import Head from 'next/head';
 import Layout from '@/layouts/opened';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Card } from '@/components';
-import Image from 'next/image';
 import {
   FaGraduationCap,
-  FaLayerGroup,
-  FaPeopleArrows,
-  FaPeopleCarry,
-  FaSchool,
   FaStar,
   FaUsers,
 } from 'react-icons/fa';
-import { formation, slugify } from '@/utils';
+import { formation_liste, slugify } from '@/utils';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useQuery } from 'react-query';
-import { fetchData, handleError, search } from '@/services';
+import { fetchData, handleError } from '@/services';
 import ImageDisplay from '@/components/image-display';
-import Debug from '@/components/Debug';
+import Metadata from '@/components/metadata';
 
 function Formations() {
   const router = useRouter();
@@ -36,7 +30,7 @@ function Formations() {
     queryFn: () =>
       fetchData({
         path: `/api/backoffice/Formation`,
-        fields: formation,
+        fields: formation_liste,
       }),
     onSuccess: ({ data: {data} }: any) => {
       setTrainings(data);
@@ -48,19 +42,7 @@ function Formations() {
   });
   return (
     <Layout>
-      <Head>
-        <title>Nos formations</title>
-        <meta property="og:title" content="CHILLO SERVICES - Devenez developpeur" />
-        <meta
-          name="description"
-          content="Formez vous sur, les compétences les plus demandées. Donnez un nouvel élan à votre carrière"
-        />
-        <meta
-          name="og:description"
-          content="Formez vous sur, les compétences les plus demandées. Donnez un nouvel élan à votre carrière"
-        />
-      </Head>
-
+      <Metadata entry={{title: "Nos formations", description:"CHILLO SERVICES - Devenez developpeur Formez vous sur, les compétences les plus demandées. Donnez un nouvel élan à votre carrière"}}/>
       <section className="heading relative">
         <div className="training-description absolute inset-0 bg-slate-900/30 z-50">
           <div className="heading-description flex-1 flex flex-col h-full justify-between pt-5">
@@ -88,7 +70,7 @@ function Formations() {
                     <FaGraduationCap className="px-3 text-6xl text-white" />
                   </span>
                   <div>
-                    <p className="font-extrabold text-2xl">6</p>
+                    <p className="font-extrabold text-2xl">{trainings.length}</p>
                     <p className="font-light text-lg">Formations</p>
                   </div>
                 </div>
@@ -106,7 +88,7 @@ function Formations() {
                     <FaStar className="px-3 text-6xl text-white" />
                   </span>
                   <div>
-                    <p className="font-extrabold text-2xl">4.9 / 5</p>
+                    <p className="font-extrabold text-2xl">4.7 / 5</p>
                     <p className="font-light text-lg">De moyenne globale</p>
                   </div>
                 </div>
@@ -129,7 +111,7 @@ function Formations() {
 
       {trainings && trainings.length ? (
         <section className="bg-rose-50 pt-6" id="nos-formations">
-          <h2 className="font-extrabold text-center text-xl md:text-3xl py-4">
+          <h2 className=" container font-extrabold text-left text-xl md:text-3xl py-4">
             Sélectionner un cours et enregistrez vous pour notre prochaine session
           </h2>
           <div className="mx-auto max-w-2xl px-4 py-3 sm:py-5 sm:px-2 lg:max-w-7xl lg:px-0">
@@ -157,7 +139,7 @@ function Formations() {
                   passHref={true}
                   href={{
                     pathname: '/formations/[slug]',
-                    query: { slug: slugify(`${training.id}-${training.titre}`) },
+                    query: { slug: training.slug },
                   }}
                 >
                   <Card data={training} />

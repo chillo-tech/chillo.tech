@@ -57,7 +57,7 @@ function Footer() {
           </div>
         </div>
         <div className="copyright border-top-1 text-slate-100 mt-2 font-light relative">
-          <div className="container flex py-2 justify-between text-sm mx-auto text-center border-solid border-t border-gray-600">
+          <div className="container flex flex-col md:flex-row py-2 justify-between text-sm mx-auto text-center border-solid border-t border-gray-600">
             <span>
               &copy; Copyright {new Date().getFullYear()} chillo.tech. Tous droits réservés.
             </span>

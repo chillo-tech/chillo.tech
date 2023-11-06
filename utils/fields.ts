@@ -93,6 +93,7 @@ description,
 ${articles},
 ${METADATA_PARAMS},
 ${IMAGE_PARAMS}`;
-const formation = `${base},${IMAGE_PARAMS},${sessions}`;
+const formation = `${base},${METADATA_PARAMS},${IMAGE_PARAMS},${sessions}`;
+const formation_liste = `${base},${METADATA_PARAMS},${IMAGE_PARAMS},${sessions}`;
 
-export { formation, emplois, customers, page };
+export { formation_liste, formation, emplois, customers, page };
