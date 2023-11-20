@@ -8,9 +8,8 @@ import { fetchData } from '@/services';
 import ImageDisplay from '@/components/image-display';
 import RenderHtmlContent from '@/components/RenderHtmlContent';
 import Metadata from '@/components/metadata';
-import Debug from '@/components/Debug';
 
-function TrainingInfos({ index }: any) {
+function TrainingInfos({ index, resolvedUrl }: any) {
   const [training, setTraining] = useState<any>();
   const [nextSession, setNextSession] = useState<any>({});
   const getNextSession = (training: any) => {
@@ -59,27 +58,31 @@ function TrainingInfos({ index }: any) {
                 <h1 className="from-slate-900 font-extrabold text-3xl text-center md:text-left md:text-4xl">
                   {training.titre}
                 </h1>
-                {Object.keys(nextSession).length ? (
+               
+                <div className="grid md:grid-cols-2 gap-4 items-center">
+                  <div>
+                  {Object.keys(nextSession).length ? (
                   <>
-                    <div className="mb-3 text-extrabold my-7 text-4xl text-center md:text-left">
-                      <span className="text-2xl">{nextSession.Session_id.duree}</span>
-                      <span className="mx-2 text-2xl">|</span>
-                      <span className="text-2xl">{nextSession.Session_id.prix[0].libelle}</span>
+                    <div className="mb-3 text-extrabold text-5xl text-center md:text-left">
+                      <span className="text-2xl block md:inline">{nextSession.Session_id.duree}</span>
+                      <span className="mx-2 text-2xl hidden md:inline">|</span>
+                      <span className="text-2xl block md:inline">{nextSession.Session_id.prix[0].libelle}</span>
                       <RenderHtmlContent
-                        classes="text-left text-sm font-light text"
+                        classes="text-left text-sm font-light text mt-3"
                         content={nextSession.Session_id.prix[0].description}
                       />
                     </div>
                   </>
                 ) : (
-                  <div className="mb-3 text-extrabold my-7 text-4xl text-center md:text-left">
+                  <div className="mb-3 text-extrabold text-4xl text-center md:text-left">
                     <span className="text-2xl">{training.duree} heures</span>
                   </div>
                 )}
-                <div className="grid md:grid-cols-2 gap-4 items-center">
                   <RenderHtmlContent content={training.prerequis} />
+
+                  </div>
                   <ImageDisplay
-                    imageClasses="object-cover overflow-hidden rounded-lg w-full h-full"
+                    imageClasses="object-contain overflow-hidden rounded-lg w-full h-full"
                     wrapperClasses="relative w-full h-60 object-cover overflow-hidden rounded-lg"
                     image={training.image}
                   />
@@ -134,7 +137,7 @@ function TrainingInfos({ index }: any) {
                 <div>
                   <RenderHtmlContent content={training.description} />
                 </div>
-                <RenderHtmlContent content={training.programme} />
+                <RenderHtmlContent content={training.programme} classes="font-light"/>
                 <RenderHtmlContent content={training.apres} />
               </Tabs>
             </div>
@@ -143,7 +146,7 @@ function TrainingInfos({ index }: any) {
             <section className="container text-xl mx-auto training py-4">
               <div className="grid md:px-32 ">
                 <div className="infos bg-slate-200 py-3 rounded-md px-3 md:px-10" id="inscription">
-                  <Inscription training={training} session={nextSession} />
+                  <Inscription training={training} session={nextSession} resolvedUrl={resolvedUrl} />
                 </div>
               </div>
             </section>
@@ -154,12 +157,14 @@ function TrainingInfos({ index }: any) {
   );
 }
 export async function getServerSideProps(context: any) {
-  const { params } = context;
+  const { params, resolvedUrl } = context;
   const { slug } = params;
-  const parts = slug.split('-')
+  const parts = slug.split('-');
+
   return {
     props: {
       ...params,
+      resolvedUrl,
       index: parts[parts.length - 1]
     },
   };

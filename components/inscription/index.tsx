@@ -29,8 +29,9 @@ const schema = yup
 type params = {
   session: any;
   training: any;
+  resolvedUrl: string
 };
-function Inscription({ session, training }: params) {
+function Inscription({ session, training, resolvedUrl}: params) {
   const {
     register,
     handleSubmit: handleFormSubmit,
@@ -59,7 +60,7 @@ const basePath = "https://backoffice.chillo.fr/items/Session/6";
   const mutation = useMutation({
     mutationFn: (candidate: any) => patchData(
       `/api/backoffice/Session/${session.Session_id.id}`, 
-      {candidats:{ create: [{candidate_id: candidate}]}}
+      {candidats:{ create: [{candidate_id: {...candidate, link: `https://chillo.tech${resolvedUrl}/attentes`, training: training.titre.trim()}}]}}
     ),
   });
   const onSubmit = async (data: any) => {
