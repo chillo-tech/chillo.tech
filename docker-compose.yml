@@ -9,6 +9,8 @@ services:
     ports:
       # The HTTP port
       - "83:3000"
+    environment:
+      BACKOFFICE_API_TOKEN: ${BACKOFFICE_API_TOKEN}
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.chillo.tech.rule=Headers(`X-Host`, `chillo.tech`)"
