@@ -5,6 +5,9 @@ on:
   workflow_dispatch:
 env:
   NODE_VERSION: '14.x'
+  FOLDER: /opt/applications/chillo-tech/website
+  IMAGE: simachille/chillo.tech
+  IMAGE_VERSION: latest
 
 permissions:
   contents: read
@@ -14,27 +17,25 @@ jobs:
     name: Create folder
     runs-on: ubuntu-latest
     steps:
-    - name: Create folder
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.RECETTE_APPLICATIONS_HOST }}
-        port: ${{ secrets.RECETTE_APPLICATIONS_PORT }}
-        username: ${{ secrets.RECETTE_APPLICATIONS_USERNAME }}
-        #password: ${{ secrets.RECETTE_APPLICATIONS_PASSWPRD }}
-        key: ${{ secrets.RECETTE_APPLICATIONS_SSH_PRIVATE_KEY }}
-        script: |
-          sudo mkdir -p /opt/applications/chillo-tech/website
-          sudo chmod ugo+rwx /opt/applications/chillo-tech/website
-
+      - name: Create folder
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.RECETTE_APPLICATIONS_HOST }}
+          port: ${{ secrets.RECETTE_APPLICATIONS_PORT }}
+          username: ${{ secrets.RECETTE_APPLICATIONS_USERNAME }}
+          #password: ${{ secrets.RECETTE_APPLICATIONS_PASSWPRD }}
+          key: ${{ secrets.RECETTE_APPLICATIONS_SSH_PRIVATE_KEY }}
+          script: |
+            sudo mkdir -p ${{ env.FOLDER }}
+            sudo chmod ugo+rwx ${{ env.FOLDER }}
 
   copy-configs:
-    name: "copy configs"
+    name: 'copy configs'
     runs-on: ubuntu-latest
     needs: create-folder
     steps:
       - uses: actions/checkout@master
-      - 
-        name: copy file via ssh password
+      - name: copy file via ssh password
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.RECETTE_APPLICATIONS_HOST }}
@@ -42,8 +43,8 @@ jobs:
           username: ${{ secrets.RECETTE_APPLICATIONS_USERNAME }}
           #password: ${{ secrets.RECETTE_APPLICATIONS_PASSWPRD }}
           key: ${{ secrets.RECETTE_APPLICATIONS_SSH_PRIVATE_KEY }}
-          source: "docker-compose.yml"
-          target: "/opt/applications/chillo-tech/website"
+          source: 'docker-compose.yml'
+          target: '${{ env.FOLDER }}'
 
   dockerize:
     runs-on: ubuntu-latest
@@ -54,38 +55,53 @@ jobs:
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
-      
-      -
-        name: Login to DockerHub
+
+      - name: Login to DockerHub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      -
-        name: Build and push
+      - name: Build and push
         uses: docker/build-push-action@v3
         with:
           context: .
           push: true
-          tags: simachille/chillo.tech:latest
-  
+          tags: ${{env.IMAGE}}:${{env.IMAGE_VERSION}}
 
   run-container:
-    name: "Run container"
+    name: 'Run container'
     runs-on: ubuntu-latest
     needs: [dockerize, copy-configs]
     steps:
-    - name: Run container
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.RECETTE_APPLICATIONS_HOST }}
-        port: ${{ secrets.RECETTE_APPLICATIONS_PORT }}
-        username: ${{ secrets.RECETTE_APPLICATIONS_USERNAME }}
-        #password: ${{ secrets.RECETTE_APPLICATIONS_PASSWPRD }}
-        key: ${{ secrets.RECETTE_APPLICATIONS_SSH_PRIVATE_KEY }}
-        script: |
-          docker compose -f /opt/applications/chillo-tech/website/docker-compose.yml stop
-          docker compose -f /opt/applications/chillo-tech/website/docker-compose.yml rm -f
-          docker rmi simachille/chillo.tech:latest
-          sudo docker compose -f /opt/applications/chillo-tech/website/docker-compose.yml up -d
+      - name: Run container
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.RECETTE_APPLICATIONS_HOST }}
+          port: ${{ secrets.RECETTE_APPLICATIONS_PORT }}
+          username: ${{ secrets.RECETTE_APPLICATIONS_USERNAME }}
+          #password: ${{ secrets.RECETTE_APPLICATIONS_PASSWPRD }}
+          key: ${{ secrets.RECETTE_APPLICATIONS_SSH_PRIVATE_KEY }}
+          script: |
+            docker compose -f ${{ env.FOLDER }}/docker-compose.yml stop
+            docker compose -f ${{ env.FOLDER }}/docker-compose.yml rm -f
+            docker rmi ${{env.IMAGE}}:${{env.IMAGE_VERSION}}
+
+            echo MAIL_USERNAME=${{ secrets.MAIL_USERNAME }} >> ${{ env.FOLDER }}/.env
+            echo MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }} >> ${{ env.FOLDER }}/.env
+            echo MAIL_FROM=${{ secrets.MAIL_FROM }} >> ${{ env.FOLDER }}/.env
+            echo BACKOFFICE_URL=${{ secrets.BACKOFFICE_URL }} >> ${{ env.FOLDER }}/.env
+            echo BACKOFFICE_API=${{ secrets.BACKOFFICE_API }} >> ${{ env.FOLDER }}/.env
+            echo BACKOFFICE_API_TOKEN=${{ secrets.BACKOFFICE_API_TOKEN }} >> ${{ env.FOLDER }}/.env
+            echo DNS=${{ secrets.DNS }} >> ${{ env.FOLDER }}/.env
+            echo FACEBOOK_SHARE_LINK=${{ secrets.FACEBOOK_SHARE_LINK }} >> ${{ env.FOLDER }}/.env
+            echo LINKEDIN_SHARE_LINK=${{ secrets.LINKEDIN_SHARE_LINK }} >> ${{ env.FOLDER }}/.env
+            echo TWITTER_SHARE_LINK=${{ secrets.TWITTER_SHARE_LINK }} >> ${{ env.FOLDER }}/.env
+            echo NEXT_PUBLIC_GOOGLE_ANALYTICS=${{ secrets.NEXT_PUBLIC_GOOGLE_ANALYTICS }} >> ${{ env.FOLDER }}/.env
+
+            sudo docker compose -f ${{ env.FOLDER }}/docker-compose.yml up -d
+
+            docker rmi ${{env.IMAGE}}:${{env.IMAGE_VERSION}}
+            sudo docker compose -f ${{ env.FOLDER }}/compose.yaml up -d
+
+            rm -f ${{ env.FOLDER }}/.env
