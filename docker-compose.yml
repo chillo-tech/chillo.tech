@@ -8,15 +8,26 @@ services:
     restart: always
     ports:
       # The HTTP port
-      - "83:3000"
+      - '83:3000'
     environment:
       BACKOFFICE_API_TOKEN: ${BACKOFFICE_API_TOKEN}
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      MAIL_FROM: ${MAIL_FROM}
+      BACKOFFICE_URL: ${BACKOFFICE_URL}
+      BACKOFFICE_API: ${BACKOFFICE_API}
+      DNS: ${DNS}
+      FACEBOOK_SHARE_LINK: ${FACEBOOK_SHARE_LINK}
+      LINKEDIN_SHARE_LINK: ${LINKEDIN_SHARE_LINK}
+      TWITTER_SHARE_LINK: ${TWITTER_SHARE_LINK}
+      NEXT_PUBLIC_GOOGLE_ANALYTICS: ${NEXT_PUBLIC_GOOGLE_ANALYTICS}
+
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.chillo.tech.rule=Headers(`X-Host`, `chillo.tech`)"
-      - "traefik.docker.network=applications-network"
-      - "traefik.http.middlewares.serviceheaders.headers.accesscontrolalloworiginlist=*" 
-      - "traefik.http.routers.service.middlewares=serviceheaders"
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.chillo.tech.rule=Headers(`X-Host`, `chillo.tech`)'
+      - 'traefik.docker.network=applications-network'
+      - 'traefik.http.middlewares.serviceheaders.headers.accesscontrolalloworiginlist=*'
+      - 'traefik.http.routers.service.middlewares=serviceheaders'
 
     networks:
       - applications-network
