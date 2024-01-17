@@ -66,10 +66,10 @@ function TrainingInfos({ index, resolvedUrl }: any) {
                     <div className="mb-3 text-extrabold text-5xl text-center md:text-left">
                       <span className="text-2xl block md:inline">{nextSession.Session_id.duree}</span>
                       <span className="mx-2 text-2xl hidden md:inline">|</span>
-                      <span className="text-2xl block md:inline">{nextSession.Session_id.prix[0].libelle}</span>
+                      <span className="text-2xl block md:inline">{nextSession.Session_id.prix[0].ConceptPrix_id.libelle}</span>
                       <RenderHtmlContent
                         classes="text-left text-sm font-light text mt-3"
-                        content={nextSession.Session_id.prix[0].description}
+                        content={nextSession.Session_id.prix[0].ConceptPrix_id.description}
                       />
                     </div>
                   </>
