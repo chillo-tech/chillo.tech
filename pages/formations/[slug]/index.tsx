@@ -13,7 +13,7 @@ function TrainingInfos({ index, resolvedUrl }: any) {
   const [training, setTraining] = useState<any>();
   const [nextSession, setNextSession] = useState<any>({});
   const getNextSession = (training: any) => {
-    const sessions = training.sessions || [];
+    const sessions = training.Sessions || [];
     if (sessions.length) {
       const nextSessions =
         sessions
