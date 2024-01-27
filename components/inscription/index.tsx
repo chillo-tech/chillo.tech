@@ -59,16 +59,16 @@ const Formation_id =16;
 const basePath = "https://backoffice.chillo.fr/items/Session/6";
   const mutation = useMutation({
     mutationFn: (candidate: any) => patchData(
-      `/api/backoffice/Session/${session.Session_id.id}`, 
+      `/api/backoffice/Session/${session.id}`, 
       {candidats:{ create: [{candidate_id: {...candidate, link: `https://chillo.tech${resolvedUrl}/attentes`, training: training.titre.trim()}}]}}
     ),
   });
   const onSubmit = async (data: any) => {
-    const reference = slugify(`${training.titre} ${dateFormat(training.sessions[0]['Session_id']['date_heure'])}`);
+    const reference = slugify(`${training.titre} ${dateFormat(training.Sessions[0]['date_heure'])}`);
     const message = {
       ...data,
       reference,
-      session: training.sessions[0]['Session_id']['date_heure'],
+      session: training.Sessions[0]['date_heure'],
       training: training['titre'],
       phoneIndex: data.phoneIndex,
       phone: data.phone,
