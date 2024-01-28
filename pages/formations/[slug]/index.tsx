@@ -73,11 +73,11 @@ function TrainingInfos({ index, resolvedUrl }: any) {
                             |
                           </span>
                           <span className="text-2xl block md:inline">
-                            {nextSession.prix[0].libelle}
+                            {nextSession.prix[0].ConceptPrix_id.libelle}
                           </span>
                           <RenderHtmlContent
                             classes="text-left text-sm font-light text mt-3"
-                            content={nextSession.prix[0].description}
+                            content={nextSession.prix[0].ConceptPrix_id.description}
                           />
                         </div>
                       </>
