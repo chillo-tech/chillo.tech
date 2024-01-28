@@ -15,7 +15,6 @@ function TrainingInfos({ index, resolvedUrl }: any) {
   const [nextSession, setNextSession] = useState<any>({});
   const getNextSession = (training: any) => {
     const sessions = training.Sessions || [];
-    console.log("training", training);
     if (sessions.length) {
       const nextSessions =
         sessions
