@@ -1,7 +1,6 @@
 const sessions =`
-sessions.*,
-sessions.Session_id.*,
-sessions.Session_id.prix.ConceptPrix_id.*
+Sessions.*,
+Sessions.prix.ConceptPrix_id.*
 `;
 const base = `
 *,

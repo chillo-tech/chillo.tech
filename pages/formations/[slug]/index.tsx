@@ -40,7 +40,7 @@ function TrainingInfos({ index, resolvedUrl }: any) {
     enabled: !!index,
     queryFn: () =>
       fetchData({
-        path: `/api/backoffice/Formation/${index}/?fields=*,Sessions.*`,
+        path: `/api/backoffice/Formation/${index}`,
         fields: formation,
       }),
     onSuccess: (data) => {
