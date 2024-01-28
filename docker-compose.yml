@@ -14,6 +14,7 @@ services:
       MAIL_USERNAME: ${MAIL_USERNAME}
       MAIL_PASSWORD: ${MAIL_PASSWORD}
       MAIL_FROM: ${MAIL_FROM}
+      MAIL_TO: ${MAIL_TO}
       BACKOFFICE_URL: ${BACKOFFICE_URL}
       BACKOFFICE_API: ${BACKOFFICE_API}
       DNS: ${DNS}
@@ -21,7 +22,6 @@ services:
       LINKEDIN_SHARE_LINK: ${LINKEDIN_SHARE_LINK}
       TWITTER_SHARE_LINK: ${TWITTER_SHARE_LINK}
       NEXT_PUBLIC_GOOGLE_ANALYTICS: ${NEXT_PUBLIC_GOOGLE_ANALYTICS}
-
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.routers.chillo.tech.rule=Headers(`X-Host`, `chillo.tech`)'
