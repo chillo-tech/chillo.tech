@@ -1,16 +1,17 @@
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-import { dateFormat, slugify } from '@/utils';
-import { useRouter } from 'next/router';
-import { useMutation } from 'react-query';
-import { patchData } from '@/services';
-import Message from '../Message';
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { dateFormat, slugify } from "@/utils";
+import { useRouter } from "next/router";
+import { useMutation } from "react-query";
+import { patchData } from "@/services";
+import Message from "../Message";
+import { axiosInstance } from "@/utils/axios";
 const schema = yup
   .object({
-    firstName: yup.string().required('Ce champ est requis'),
-    lastName: yup.string().required('Ce champ est requis'),
-    email: yup.string().required('Ce champ est requis').email('Email invalide'),
+    firstName: yup.string().required("Ce champ est requis"),
+    lastName: yup.string().required("Ce champ est requis"),
+    email: yup.string().required("Ce champ est requis").email("Email invalide"),
     phoneIndex: yup
       .number()
       .typeError("L'indicatif invalide")
@@ -19,19 +20,19 @@ const schema = yup
       .required("L'indicatif est requis"),
     phone: yup
       .string()
-      .typeError('Téléphone invalide')
-      .matches(/^[0-9]+$/, 'Le téléphone invalide')
-      .required('Le téléphone est requis')
-      .min(8, 'Le téléphone invalide'),
+      .typeError("Téléphone invalide")
+      .matches(/^[0-9]+$/, "Le téléphone invalide")
+      .required("Le téléphone est requis")
+      .min(8, "Le téléphone invalide"),
   })
   .required();
 
 type params = {
   session: any;
   training: any;
-  resolvedUrl: string
+  resolvedUrl: string;
 };
-function Inscription({ session, training, resolvedUrl}: params) {
+function Inscription({ session, training, resolvedUrl }: params) {
   const {
     register,
     handleSubmit: handleFormSubmit,
@@ -40,36 +41,53 @@ function Inscription({ session, training, resolvedUrl}: params) {
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      message: '',
-      firstName: '',
-      lastName: '',
-      email: '',
-      phone: '',
-      phoneIndex: '',
+      message: "",
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      phoneIndex: "",
     },
   });
 
   const router = useRouter();
   const handleError = (error: any) => {
     error.preventDefault();
-    router.push('/');
+    router.push("/");
   };
-const Session_id =1;
-const Formation_id =16;
-const basePath = "https://backoffice.chillo.fr/items/Session/6";
+  const Session_id = 1;
+  const Formation_id = 16;
+  const basePath = "https://backoffice.chillo.fr/items/Session/6";
   const mutation = useMutation({
-    mutationFn: (candidate: any) => patchData(
-      `/api/backoffice/Session/${session.id}`, 
-      {candidats:{ create: [{candidate_id: {...candidate, link: `https://chillo.tech${resolvedUrl}/attentes`, training: training.titre.trim()}}]}}
-    ),
+    // mutationFn: (candidate: any) => patchData(
+    //   `/api/backoffice/Session/${session.id}`,
+    //   {candidats:{ create: [{candidate_id: {...candidate, link: `https://chillo.tech${resolvedUrl}/attentes`, training: training.titre.trim()}}]}}
+    // ),
+    mutationFn: (candidate: any) =>
+      axiosInstance.post(`/api/backend/formations/inscription`, {
+        session_id: session.id,
+        candidats: {
+          create: [
+            {
+              candidate_id: {
+                ...candidate,
+                link: `https://chillo.tech${resolvedUrl}/attentes`,
+                training: training.titre.trim(),
+              },
+            },
+          ],
+        },
+      }),
   });
   const onSubmit = async (data: any) => {
-    const reference = slugify(`${training.titre} ${dateFormat(training.Sessions[0]['date_heure'])}`);
+    const reference = slugify(
+      `${training.titre} ${dateFormat(training.Sessions[0]["date_heure"])}`
+    );
     const message = {
       ...data,
       reference,
-      session: training.Sessions[0]['date_heure'],
-      training: training['titre'],
+      session: training.Sessions[0]["date_heure"],
+      training: training["titre"],
       phoneIndex: data.phoneIndex,
       phone: data.phone,
     };
@@ -113,20 +131,34 @@ const basePath = "https://backoffice.chillo.fr/items/Session/6";
             <div>
               <div className="grid grid-cols-1">
                 <div>
-                  <label htmlFor="firstName" className="font-extralight form-label">
+                  <label
+                    htmlFor="firstName"
+                    className="font-extralight form-label"
+                  >
                     Prénom
                   </label>
                   <div className="mt-1">
-                    <input {...register('firstName')} type="text" id="firstName" />
+                    <input
+                      {...register("firstName")}
+                      type="text"
+                      id="firstName"
+                    />
                   </div>
                   <p className="text-red-600">{errors?.firstName?.message}</p>
                 </div>
                 <div>
-                  <label htmlFor="lastName" className="font-extralight form-label">
+                  <label
+                    htmlFor="lastName"
+                    className="font-extralight form-label"
+                  >
                     Nom
                   </label>
                   <div className="mt-1">
-                    <input {...register('lastName')} type="text" id="lastName" />
+                    <input
+                      {...register("lastName")}
+                      type="text"
+                      id="lastName"
+                    />
                   </div>
                   <p className="text-red-600">{errors?.lastName?.message}</p>
                 </div>
@@ -139,7 +171,11 @@ const basePath = "https://backoffice.chillo.fr/items/Session/6";
                   Téléphone
                 </label>
                 <div className="mt-1 grid gap-1 md:grid-cols-3 font-extralight">
-                  <select {...register('phoneIndex')} name="phoneIndex" id="phoneIndex">
+                  <select
+                    {...register("phoneIndex")}
+                    name="phoneIndex"
+                    id="phoneIndex"
+                  >
                     <option value="">Pays</option>
                     <option value="33">France (+33)</option>
                     <option value="237">Cameroun (+237)</option>
@@ -149,7 +185,9 @@ const basePath = "https://backoffice.chillo.fr/items/Session/6";
                       <option value="376">Andorra (+376)</option>
                       <option value="244">Angola (+244)</option>
                       <option value="1264">Anguilla (+1264)</option>
-                      <option value="1268">Antigua &amp; Barbuda (+1268)</option>
+                      <option value="1268">
+                        Antigua &amp; Barbuda (+1268)
+                      </option>
                       <option value="54">Argentina (+54)</option>
                       <option value="374">Armenia (+374)</option>
                       <option value="297">Aruba (+297)</option>
@@ -179,7 +217,9 @@ const basePath = "https://backoffice.chillo.fr/items/Session/6";
                       <option value="1">Canada (+1)</option>
                       <option value="238">Cape Verde Islands (+238)</option>
                       <option value="1345">Cayman Islands (+1345)</option>
-                      <option value="236">Central African Republic (+236)</option>
+                      <option value="236">
+                        Central African Republic (+236)
+                      </option>
                       <option value="56">Chile (+56)</option>
                       <option value="86">China (+86)</option>
                       <option value="57">Colombia (+57)</option>
@@ -306,7 +346,9 @@ const basePath = "https://backoffice.chillo.fr/items/Session/6";
                       <option value="7">Russia (+7)</option>
                       <option value="250">Rwanda (+250)</option>
                       <option value="378">San Marino (+378)</option>
-                      <option value="239">Sao Tome &amp; Principe (+239)</option>
+                      <option value="239">
+                        Sao Tome &amp; Principe (+239)
+                      </option>
                       <option value="966">Saudi Arabia (+966)</option>
                       <option value="221">Senegal (+221)</option>
                       <option value="381">Serbia (+381)</option>
@@ -334,12 +376,16 @@ const basePath = "https://backoffice.chillo.fr/items/Session/6";
                       <option value="66">Thailand (+66)</option>
                       <option value="228">Togo (+228)</option>
                       <option value="676">Tonga (+676)</option>
-                      <option value="1868">Trinidad &amp; Tobago (+1868)</option>
+                      <option value="1868">
+                        Trinidad &amp; Tobago (+1868)
+                      </option>
                       <option value="216">Tunisia (+216)</option>
                       <option value="90">Turkey (+90)</option>
                       <option value="7">Turkmenistan (+7)</option>
                       <option value="993">Turkmenistan (+993)</option>
-                      <option value="1649">Turks &amp; Caicos Islands (+1649)</option>
+                      <option value="1649">
+                        Turks &amp; Caicos Islands (+1649)
+                      </option>
                       <option value="688">Tuvalu (+688)</option>
                       <option value="256">Uganda (+256)</option>
                       <option value="44">UK (+44)</option>
@@ -352,7 +398,9 @@ const basePath = "https://backoffice.chillo.fr/items/Session/6";
                       <option value="379">Vatican City (+379)</option>
                       <option value="58">Venezuela (+58)</option>
                       <option value="84">Vietnam (+84)</option>
-                      <option value="84">Virgin Islands - British (+1284)</option>
+                      <option value="84">
+                        Virgin Islands - British (+1284)
+                      </option>
                       <option value="84">Virgin Islands - US (+1340)</option>
                       <option value="681">Wallis &amp; Futuna (+681)</option>
                       <option value="969">Yemen (North)(+969)</option>
@@ -361,7 +409,12 @@ const basePath = "https://backoffice.chillo.fr/items/Session/6";
                       <option value="263">Zimbabwe (+263)</option>
                     </optgroup>
                   </select>
-                  <input {...register('phone')} type="text" className="md:col-span-2" id="phone" />
+                  <input
+                    {...register("phone")}
+                    type="text"
+                    className="md:col-span-2"
+                    id="phone"
+                  />
                 </div>
                 <p className="mb-0 text-red-600">
                   {errors?.phoneIndex?.message} {errors?.phone?.message}
@@ -372,7 +425,7 @@ const basePath = "https://backoffice.chillo.fr/items/Session/6";
                   E-mail
                 </label>
                 <div className="mt-1">
-                  <input {...register('email')} type="email" id="email" />
+                  <input {...register("email")} type="email" id="email" />
                 </div>
                 <p className="text-red-600">{errors?.email?.message}</p>
               </div>
@@ -385,7 +438,8 @@ const basePath = "https://backoffice.chillo.fr/items/Session/6";
               </button>
             </div>
             <p className="text-center font-bold">
-              Nous ne traitons les données recueillies que pour faciliter la prise de contact.
+              Nous ne traitons les données recueillies que pour faciliter la
+              prise de contact.
             </p>
             {/*<NetworkShared path={'/formations' + slugify(`${training.titre}-${training.id}`)} />*/}
           </div>
