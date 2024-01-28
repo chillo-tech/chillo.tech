@@ -8,6 +8,7 @@ import { fetchData } from "@/services";
 import ImageDisplay from "@/components/image-display";
 import RenderHtmlContent from "@/components/RenderHtmlContent";
 import Metadata from "@/components/metadata";
+import Message from "@/components/Message";
 
 function TrainingInfos({ index, resolvedUrl }: any) {
   const [training, setTraining] = useState<any>();
@@ -25,9 +26,7 @@ function TrainingInfos({ index, resolvedUrl }: any) {
           )
           .filter(
             (a: any) =>
-              new Date(a.date_heure).getTime() -
-                new Date().getTime() >
-              0
+              new Date(a.date_heure).getTime() - new Date().getTime() > 0
           ) || [];
       if (nextSessions.length) {
         setNextSession(nextSessions[0]);
@@ -118,8 +117,7 @@ function TrainingInfos({ index, resolvedUrl }: any) {
                     />
                     <p>
                       <span className="text-3xl mx-1">
-                        La formation est{" "}
-                        {nextSession?.type_formation}
+                        La formation est {nextSession?.type_formation}
                       </span>
                     </p>
                   </div>
@@ -183,7 +181,13 @@ function TrainingInfos({ index, resolvedUrl }: any) {
             </section>
           ) : null}
         </>
-      ) : null}
+      ) : (
+        <Message
+          type="loading"
+          firstMessage="Un instant"
+          secondMessage="Nous récuperons les données"
+        />
+      )}
     </Layout>
   );
 }
