@@ -7,6 +7,7 @@ import { useMutation } from "react-query";
 import { patchData } from "@/services";
 import Message from "../Message";
 import { axiosInstance } from "@/utils/axios";
+import axios from "axios";
 const schema = yup
   .object({
     firstName: yup.string().required("Ce champ est requis"),
@@ -64,7 +65,7 @@ function Inscription({ session, training, resolvedUrl }: params) {
     //   {candidats:{ create: [{candidate_id: {...candidate, link: `https://chillo.tech${resolvedUrl}/attentes`, training: training.titre.trim()}}]}}
     // ),
     mutationFn: (candidate: any) =>
-      axiosInstance.post(`/api/backend/formations/inscription`, {
+      axios.post(`/api/backend/formations/inscription`, {
         session_id: session.id,
         candidats: {
           create: [
