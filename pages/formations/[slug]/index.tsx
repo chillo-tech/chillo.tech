@@ -77,7 +77,9 @@ function TrainingInfos({ index, resolvedUrl }: any) {
                           </span>
                           <RenderHtmlContent
                             classes="text-left text-sm font-light text mt-3"
-                            content={nextSession.prix[0].ConceptPrix_id.description}
+                            content={
+                              nextSession.prix[0].ConceptPrix_id.description
+                            }
                           />
                         </div>
                       </>

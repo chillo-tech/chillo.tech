@@ -1,23 +1,24 @@
-import Layout from '@/layouts/opened';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-import { useState } from 'react';
-import { useRouter } from 'next/router';
-import { useMutation, useQuery } from 'react-query';
-import { fetchData, patchData } from '@/services';
-import Message from '@/components/Message';
-import Metadata from '@/components/metadata';
-import { EVALUATIONS, formation_liste } from '@/utils';
-import RenderHtmlContent from '@/components/RenderHtmlContent';
-import classNames from 'classnames';
-import { AiFillCheckCircle } from 'react-icons/ai';
-import { RadioGroup } from '@headlessui/react';
+import Layout from "@/layouts/opened";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { useState } from "react";
+import { useRouter } from "next/router";
+import { useMutation, useQuery } from "react-query";
+import { fetchData, patchData } from "@/services";
+import Message from "@/components/Message";
+import Metadata from "@/components/metadata";
+import { EVALUATIONS, formation_liste } from "@/utils";
+import RenderHtmlContent from "@/components/RenderHtmlContent";
+import classNames from "classnames";
+import { AiFillCheckCircle } from "react-icons/ai";
+import { RadioGroup } from "@headlessui/react";
+import { axiosInstance } from "@/services/axios-instance";
 const schema = yup
   .object({
     texte: yup.string(),
-    note: yup.string().required('Ce champ est requis'),
-    email: yup.string().required('Ce champ est requis'),
+    note: yup.string().required("Ce champ est requis"),
+    email: yup.string().required("Ce champ est requis"),
   })
   .required();
 
@@ -35,28 +36,28 @@ function Contact({ index, sessionId }: any) {
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      texte: '',
-      note: '',
-      email: ''
+      texte: "",
+      note: "",
+      email: "",
     },
   });
   const mutation = useMutation({
     mutationFn: (message: any) =>
       patchData(`/api/backoffice/Session/${sessionId}`, {
-        avis: { create: [{ ...message, status: 'published' }] },
+        avis: { create: [{ ...message, status: "published" }] },
       }),
   });
 
   const handleError = (error: any) => {
     error.preventDefault();
-    router.push('/');
+    router.push("/");
   };
   const onSubmit = async (data: any) => {
     mutation.mutate(data);
   };
 
   useQuery<any>({
-    queryKey: ['menu', index],
+    queryKey: ["menu", index],
     enabled: !!index,
     queryFn: () =>
       fetchData({
@@ -70,44 +71,50 @@ function Contact({ index, sessionId }: any) {
   });
 
   const getNextSession = (training: any) => {
-    const sessions = training.sessions || [];
+    const sessions = training.Sessions || [];
     if (sessions.length) {
       const nextSessions =
         sessions
           .sort(
             (a: any, b: any) =>
-              new Date(a.Session_id.date_heure).getTime() -
-              new Date(b.Session_id.date_heure).getTime()
+              new Date(a.date_heure).getTime() -
+              new Date(b.date_heure).getTime()
           )
           .filter(
-            (a: any) => new Date(a.Session_id.date_heure).getTime() - new Date().getTime() > 0
+            (a: any) =>
+              new Date(a.date_heure).getTime() - new Date().getTime() > 0
           ) || [];
       if (nextSessions.length) {
         setNextSession(nextSessions[0]);
       }
     } else {
-      router.push('/page-inconnue')
+      router.push("/page-inconnue");
     }
   };
   const updatNote = (value: number) => {
     setNote(value);
-    setValue('note', `${value}`)
+    setValue("note", `${value}`);
   };
+  
   return (
     <>
       <Layout>
-        <Metadata entry={training && training?.metadonnees && training?.metadonnees[0]} />
+        <Metadata
+          entry={training && training?.metadonnees && training?.metadonnees[0]}
+        />
         <section className="container mx-auto py-5">
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div className="text-blue-900 font-extralight infos bg--900 md:py-10 px-4 flex flex-col">
               {training ? (
                 <>
-                  <h2 className="title from-slate-900 font-extrabold text-2xl md:text-4xl">{training.titre}</h2>
-                  
+                  <h2 className="title from-slate-900 font-extrabold text-2xl md:text-4xl">
+                    {training.titre}
+                  </h2>
+
                   <RenderHtmlContent
-                        classes="text-left text-xl font-light text mt-10 hidden md:block"
-                        content={training.apres}
-                      />
+                    classes="text-left text-xl font-light text mt-10 hidden md:block"
+                    content={training.apres}
+                  />
                 </>
               ) : null}
             </div>
@@ -144,7 +151,10 @@ function Contact({ index, sessionId }: any) {
                       <p className="mb-2 font-extrabold text-blue-900 text-2xl">
                         Merci de nous donner votre avis
                       </p>
-                      <p>Les évaluations nous permmettent de constament nous améliorer</p>
+                      <p>
+                        Les évaluations nous permmettent de constament nous
+                        améliorer
+                      </p>
                       <p>Globalement vous êtes ...</p>
                     </div>
                     <div className="mb-4">
@@ -158,17 +168,17 @@ function Contact({ index, sessionId }: any) {
                                   value={value}
                                   className={({ active, checked }) =>
                                     classNames(
-                                      'relative flex cursor-pointer rounded-lg px-5 py-3 shadow-md focus:outline-none',
+                                      "relative flex cursor-pointer rounded-lg px-5 py-3 shadow-md focus:outline-none",
                                       {
-                                        'ring-2 ring-white/60 ring-offset-2 ring-offset-sky-300':
+                                        "ring-2 ring-white/60 ring-offset-2 ring-offset-sky-300":
                                           active,
-                                        'text-white': checked,
-                                        'bg-red-400': checked && note === 1,
-                                        'bg-yellow-400': checked && note === 2,
-                                        'bg-sky-400': checked && note === 3,
-                                        'bg-blue-700': checked && note === 4,
-                                        'bg-green-900': checked && note === 5,
-                                        'bg-white': !checked,
+                                        "text-white": checked,
+                                        "bg-red-400": checked && note === 1,
+                                        "bg-yellow-400": checked && note === 2,
+                                        "bg-sky-400": checked && note === 3,
+                                        "bg-blue-700": checked && note === 4,
+                                        "bg-green-900": checked && note === 5,
+                                        "bg-white": !checked,
                                       }
                                     )
                                   }
@@ -181,7 +191,9 @@ function Contact({ index, sessionId }: any) {
                                             <RadioGroup.Label
                                               as="p"
                                               className={`font-semi  ${
-                                                checked ? 'text-white' : 'text-gray-900'
+                                                checked
+                                                  ? "text-white"
+                                                  : "text-gray-900"
                                               }`}
                                             >
                                               {text}
@@ -205,20 +217,35 @@ function Contact({ index, sessionId }: any) {
                       <p className="text-red-600">{errors?.note?.message}</p>
                     </div>
                     <div className="mb-2">
-                      <label htmlFor="message" className="font-extralight form-label">
+                      <label
+                        htmlFor="message"
+                        className="font-extralight form-label"
+                      >
                         Votre message pour nous
                       </label>
                       <div className="mt-1">
-                        <textarea {...register('texte')} id="message" rows={8} />
+                        <textarea
+                          {...register("texte")}
+                          id="message"
+                          rows={8}
+                        />
                       </div>
                       <p className="text-red-600">{errors?.texte?.message}</p>
                     </div>
                     <div className="mb-2">
-                      <label htmlFor="email" className="font-extralight form-label">
+                      <label
+                        htmlFor="email"
+                        className="font-extralight form-label"
+                      >
                         E-mail
                       </label>
                       <div className="mt-1">
-                        <input {...register('email')} type="email" id="email" placeholder='Votre adresse email' />
+                        <input
+                          {...register("email")}
+                          type="email"
+                          id="email"
+                          placeholder="Votre adresse email"
+                        />
                       </div>
                       <p className="text-red-600">{errors?.email?.message}</p>
                     </div>
@@ -229,8 +256,8 @@ function Contact({ index, sessionId }: any) {
                       Envoyer
                     </button>
                     <p className="text-center py-5 font-boldxz">
-                      Nous ne traitons les données recueillies que pour faciliter la prise de
-                      contact.
+                      Nous ne traitons les données recueillies que pour
+                      faciliter la prise de contact.
                     </p>
                   </div>
                 </form>
@@ -244,16 +271,45 @@ function Contact({ index, sessionId }: any) {
 }
 
 export async function getServerSideProps(context: any) {
-  const { params } = context;
+  const { params, res } = context;
   const { slug, session } = params;
-  const slugparts = slug.split('-');
-  const sessionparts = session.split('-');
-  return {
-    props: {
-      ...params,
-      index: slugparts[slugparts.length - 1],
-      sessionId: sessionparts[sessionparts.length - 1]
-    },
-  };
+  const slugparts = slug.split("-");
+  const sessionparts = session.split("-");
+  try {
+    const formationResponse = await axiosInstance.get(
+      `/api/backoffice/Formation/${slugparts.at(-1)}/?fields=*,Sessions.*`
+    );
+
+    const formation = formationResponse.data.data;
+
+    if (!formation || formation.slug !== slug) {
+      res.writeHead(302, { Location: "/not-found" });
+      res.end();
+      return { props: {} };
+    }
+
+    const foundedSession = formation.Sessions.find(
+      (sess: any) => sess.slug === session
+    );
+
+    if (!foundedSession) {
+      res.writeHead(302, { Location: "/not-found" });
+      res.end();
+      return { props: {} };
+    }
+
+    return {
+      props: {
+        ...params,
+        index: slugparts[slugparts.length - 1],
+        sessionId: sessionparts[sessionparts.length - 1],
+      },
+    };
+  } catch (error) {
+    console.log("error", error);
+    res.writeHead(302, { Location: "/not-found" });
+    res.end();
+    return { props: {} };
+  }
 }
 export default Contact;
