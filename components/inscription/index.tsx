@@ -80,6 +80,7 @@ function Inscription({ session, training, resolvedUrl }: params) {
         },
       }),
   });
+
   const onSubmit = async (data: any) => {
     const reference = slugify(
       `${training.titre} ${dateFormat(training.Sessions[0]["date_heure"])}`
@@ -106,7 +107,11 @@ function Inscription({ session, training, resolvedUrl }: params) {
       {mutation.isError ? (
         <Message
           type="error"
-          firstMessage="Une erreur est survenue, nous allons la résoudre sous peu"
+          firstMessage={
+            (mutation.error as any)?.response.data?.short === "ressource deja existence"
+              ? "Il semblerait que vous soyez deja inscrit, si cela est une erreur alors,"
+              : "Une erreur est survenue, nous allons la résoudre sous peu"
+          }
           secondMessage="N'hésitez pas à nous passer un coup de fil"
           action={handleError}
           actionLabel="Retourner à l'accueil"

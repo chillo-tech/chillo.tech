@@ -95,6 +95,7 @@ function Contact({ index, sessionId }: any) {
     setNote(value);
     setValue("note", `${value}`);
   };
+  
   return (
     <>
       <Layout>
