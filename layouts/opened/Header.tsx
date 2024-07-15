@@ -37,7 +37,7 @@ function Header() {
               <div className="md-header-links hidden md:flex">
                 {
                   HEADER_LINKS.map((link)=> (
-                    <Link href={`/${link.to}`} key={link.to} className="block py-6 px-2 text-gray-500 font-light text-lg hover:text-green-500 transition duration-300"
+                    <Link href={`${link.to}`} key={link.to} className="block py-6 px-2 text-gray-500 font-light text-lg hover:text-green-500 transition duration-300"
                       >{link.label}
                     </Link>
                   ))
