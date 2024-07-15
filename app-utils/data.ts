@@ -17,7 +17,7 @@ export const HEADER_LINKS = [
   },
   {
     "label": "Nos formations",
-    "to": "formations",
+    "to": "https://trainings.chillo.tech",
   },
   {
     "label": "Rejoignez nous",
