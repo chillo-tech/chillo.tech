@@ -1,19 +1,15 @@
 export const HEADER_LINKS = [
   {
     "label": "Qui sommes nous ?",
-    "to": "#a-propos-de-nous",
+    "to": "/#a-propos-de-nous",
   },
   {
     "label": "Notre expertise",
-    "to": "#notre-expertise",
+    "to": "/#notre-expertise",
   },
   {
     "label": "Nos références",
-    "to": "#ils-nous-font-confiance",
-  },
-  {
-    "label": "Coaching",
-    "to": "coaching",
+    "to": "/#ils-nous-font-confiance",
   },
   {
     "label": "Nos formations",
@@ -21,11 +17,11 @@ export const HEADER_LINKS = [
   },
   {
     "label": "Rejoignez nous",
-    "to": "nos-postes",
+    "to": "/nos-postes",
   },
   {
     "label": "Contactez nous",
-    "to": "nous-contacter",
+    "to": "/nous-contacter",
   }
 ]
 
